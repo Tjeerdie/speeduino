@@ -76,6 +76,7 @@ SPIAsEEPROM::SPIAsEEPROM()
   }
 
 int8_t SPIAsEEPROM::write(uint16_t addressEEPROM, uint8_t writeValue){ 
+
     uint8_t ByteBuf[1];
 
     //Check if adress is in the EEPROM space  
@@ -87,7 +88,8 @@ int8_t SPIAsEEPROM::write(uint16_t addressEEPROM, uint8_t writeValue){
 
     //only write if value is changed. 
     if (readValue != writeValue){
-
+    // Serial.print(addressEEPROM);
+    // Serial.println(" :Update function");
       //Check if buffer is full and an erase must be performed.
       if (nrOfOnes < 1){
 
