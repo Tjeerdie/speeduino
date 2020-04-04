@@ -21,7 +21,7 @@
 void initialiseAll()
 {   
     fpPrimed = false;
-
+    volatile uint8_t ReadTestByte = EEPROM.read(3);
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
     table3D_setSize(&fuelTable, 16);
@@ -44,8 +44,9 @@ void initialiseAll()
     configPage4.bootloaderCaps = 0;
     
     initBoard(); //This calls the current individual boards init function. See the board_xxx.ino files for these.
+    ReadTestByte = EEPROM.read(3);
     initialiseTimers();
-
+    ReadTestByte = EEPROM.read(3);
     Serial.begin(115200);
     if (configPage9.enable_secondarySerial == 1) { CANSerial.begin(115200); }
 
@@ -53,7 +54,7 @@ void initialiseAll()
     configPage9.intcan_available = 1;   // device has internal canbus
     //STM32 can not currently enabled
     #endif
-
+    ReadTestByte = EEPROM.read(3);
     #if defined(CORE_TEENSY)
     configPage9.intcan_available = 1;   // device has internal canbus
     //Teensy uses the Flexcan_T4 library to use the internal canbus
@@ -64,7 +65,7 @@ void initialiseAll()
       Can0.setBaudRate(500000);
       Can0.enableFIFO();
     #endif
-
+    ReadTestByte = EEPROM.read(3);
     //Repoint the 2D table structs to the config pages that were just loaded
     taeTable.valueSize = SIZE_BYTE; //Set this table to use byte values
     taeTable.axisSize = SIZE_BYTE; //Set this table to use byte axis bins
@@ -182,7 +183,7 @@ void initialiseAll()
 
     //Setup the calibration tables
     loadCalibration();
-
+    ReadTestByte = EEPROM.read(3);
     //Set the pin mappings
     if(configPage2.pinMapping == 255)
     {
@@ -192,6 +193,7 @@ void initialiseAll()
     }
     else { setPinMapping(configPage2.pinMapping); }
 
+    ReadTestByte = EEPROM.read(3);
     //Need to check early on whether the coil charging is inverted. If this is not set straight away it can cause an unwanted spark at bootup
     if(configPage4.IgInv == 1) { coilHIGH = LOW; coilLOW = HIGH; }
     else { coilHIGH = HIGH; coilLOW = LOW; }
@@ -225,17 +227,23 @@ void initialiseAll()
     #if (INJ_CHANNELS >= 8)
     closeInjector8();
     #endif
-
+    ReadTestByte = EEPROM.read(3);
     //Set the tacho output default state
     digitalWrite(pinTachOut, HIGH);
     //Perform all initialisations
     initialiseSchedulers();
+    ReadTestByte = EEPROM.read(3);
     //initialiseDisplay();
     initialiseIdle();
+    ReadTestByte = EEPROM.read(3);
     initialiseFan();
+    ReadTestByte = EEPROM.read(3);
     initialiseAuxPWM();
+    ReadTestByte = EEPROM.read(3);
     initialiseCorrections();
+    ReadTestByte = EEPROM.read(3);
     initialiseADC();
+    ReadTestByte = EEPROM.read(3);
 
     //Lookup the current MAP reading for barometric pressure
     instanteneousMAPReading();
@@ -267,7 +275,7 @@ void initialiseAll()
         else { currentStatus.baro = 100; } //Final fall back position.
     }
     }
-
+    ReadTestByte = EEPROM.read(3);
     //Check whether the flex sensor is enabled and if so, attach an interupt for it
     if(configPage2.flexEnabled > 0)
     {
@@ -319,9 +327,11 @@ void initialiseAll()
     toothHistoryIndex = 0;
     toothHistorySerialIndex = 0;
 
+
+    ReadTestByte = EEPROM.read(3);
     noInterrupts();
     initialiseTriggers();
-
+    ReadTestByte = EEPROM.read(3);
     //End crank triger interrupt attachment
     if(configPage2.strokes == FOUR_STROKE)
     {
@@ -936,7 +946,7 @@ void initialiseAll()
       currentStatus.fuelPumpOn = true;
     }
     else { fpPrimed = true; } //If the user has set 0 for the pump priming, immediately mark the priming as being completed
-
+    ReadTestByte = EEPROM.read(3);
     interrupts();
     //Perform the priming pulses. Set these to run at an arbitrary time in the future (100us). The prime pulse value is in ms*10, so need to multiple by 100 to get to uS
     readCLT(false); // Need to read coolant temp to make priming pulsewidth work correctly. The false here disables use of the filter

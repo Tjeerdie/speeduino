@@ -120,7 +120,7 @@ int8_t SPIAsEEPROM::write(uint16_t addressEEPROM, uint8_t writeValue){
       //write the new value at the new location 
       ByteBuf[0] = writeValue;
       winbondSPIFlash.WE();
-      winbondSPIFlash.writePage(dataFlashAddress, ByteBuf, sizeof(ByteBuf));
+      winbondSPIFlash.writePage(dataFlashAddress - 1, ByteBuf, sizeof(ByteBuf));
       while(winbondSPIFlash.busy());
 
       //write where read can find the new value
@@ -208,7 +208,7 @@ uint8_t SPIAsEEPROM::read(uint16_t addressEEPROM){
     //Calulate the adress from all previous information.
     dataFlashAddress = sectorNumber*SECTORSIZE  + (pageNumber * FLASH_PAGESIZE) + INFOBYTESSECTOROFFSET + nrOfOnes - 1;
 
-    uint8_t ByteBuf[1];
+    uint8_t ByteBuf[10];
     //read the actual byte with information
 
     winbondSPIFlash.read(dataFlashAddress, ByteBuf, sizeof(ByteBuf));
