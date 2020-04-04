@@ -163,13 +163,17 @@ uint8_t SPIAsEEPROM::writeMagicNumber(uint16_t sectorNumber){
     return 0;
 }
 
-uint8_t SPIAsEEPROM::formatFlashForUse(){
+int8_t SPIAsEEPROM::formatFlashForUse(){
   //Format the flash for use by erasing all sectors used and 
   //write the magic number at the start of each erased sector
   for(uint16_t i = 0; i<FLASHSIZEUSED/SECTORSIZE; i++){
     writeMagicNumber(i);
   } 
   return 0;
+}
+
+int8_t SPIAsEEPROM::clear(){
+  return formatFlashForUse();
 }
 
 uint8_t SPIAsEEPROM::read(uint16_t addressEEPROM){

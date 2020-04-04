@@ -106,6 +106,15 @@ void command()
       Serial.print(F("001"));
       break;
 
+    case 'f': // Format flash function for testing/debugging
+      #if defined(USE_SPI_EEPROM)
+        Serial.println("Formatting Flash EEPROM"); //Formatting takes a couple of seconds
+        EEPROM.clear();
+        Serial.println("Formatted Flash EEPROM");
+      #endif
+      break;
+
+
     case 'H': //Start the tooth logger
       currentStatus.toothLogEnabled = true;
       currentStatus.compositeLogEnabled = false; //Safety first (Should never be required)

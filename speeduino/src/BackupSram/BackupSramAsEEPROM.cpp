@@ -47,7 +47,7 @@
             return -1;
           }
           
-          for( i = 0; i < bytes; i++ ) {
+          for( i = 0; i < bytes; i++ ) { 
             *(data + i) = *(base_addr + offset + i);
           }
           return 0;
@@ -69,6 +69,13 @@
     int8_t BackupSramAsEEPROM::update(uint16_t address, uint8_t val) {
         write_byte(&val, 1, address);   
         return 0;
+    }
+
+    int8_t BackupSramAsEEPROM::clear(){
+      for (uint16_t i=0; i < backup_size; i++) {
+        write(i, 0XFF);
+      }
+      return 0;
     }
 
 BackupSramAsEEPROM EEPROM;

@@ -1852,23 +1852,23 @@ void setPinMapping(byte boardID)
         pinFuelPump = PA6; //ADC12 LED_BUILTIN_1
         /* = PA7; */ //ADC12 LED_BUILTIN_2
         pinCoil3 = PA8;
-        /* = PA9 */ //TXD1
-        /* = PA10 */ //RXD1
-        /* = PA11 */ //(DO NOT USE FOR SPEEDUINO) USB
-        /* = PA12 */ //(DO NOT USE FOR SPEEDUINO) USB 
-        /* = PA13 */ //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
-        /* = PA14 */ //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
-        /* = PA15 */ //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
+        pinDNU[0] = PA9; //TXD1
+        pinDNU[1] = PA10; //RXD1
+        pinDNU[2] = PA11; //(DO NOT USE FOR SPEEDUINO) USB
+        pinDNU[3] = PA12; //(DO NOT USE FOR SPEEDUINO) USB 
+        //pinDNU[4] = PA13; //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
+        //pinDNU[5] = PA14; //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
+        pinDNU[6] = PA15; //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
 
         //******************************************
         //******** PORTB CONNECTIONS *************** 
         //******************************************
-        /* = PB0; */ //(DO NOT USE FOR SPEEDUINO) ADC123 - SPI FLASH CHIP CS pin
+        pinDNU[7] = PB0; //(DO NOT USE FOR SPEEDUINO) ADC123 - SPI FLASH CHIP CS pin
         pinBaro = PB1; //ADC12
-        /* = PB2; */ //(DO NOT USE FOR SPEEDUINO) BOOT1 
-        /* = PB3; */ //(DO NOT USE FOR SPEEDUINO) SPI1_SCK FLASH CHIP
-        /* = PB4; */ //(DO NOT USE FOR SPEEDUINO) SPI1_MISO FLASH CHIP
-        /* = PB5; */ //(DO NOT USE FOR SPEEDUINO) SPI1_MOSI FLASH CHIP
+        //pinDNU[8] = PB2; //(DO NOT USE FOR SPEEDUINO) BOOT1 
+        pinDNU[9] = PB3; //(DO NOT USE FOR SPEEDUINO) SPI1_SCK FLASH CHIP
+        pinDNU[10] = PB4; //(DO NOT USE FOR SPEEDUINO) SPI1_MISO FLASH CHIP
+        pinDNU[11] = PB5; //(DO NOT USE FOR SPEEDUINO) SPI1_MOSI FLASH CHIP
         /* = PB6; */ //NRF_CE
         /* = PB7; */ //NRF_CS
         /* = PB8; */ //NRF_IRQ
@@ -1894,11 +1894,11 @@ void setPinMapping(byte boardID)
         /*pinVVT_1 = PC6; */ //
         pinBat = PC6; //
         pinDisplayReset = PC7; //
-        /* = PC8; */ //(DO NOT USE FOR SPEEDUINO) - SDIO_D0
-        /* = PC9; */ //(DO NOT USE FOR SPEEDUINO) - SDIO_D1
-        /* = PC10; */ //(DO NOT USE FOR SPEEDUINO) - SDIO_D2
-        /* = PC11; */ //(DO NOT USE FOR SPEEDUINO) - SDIO_D3
-        /* = PC12; */ //(DO NOT USE FOR SPEEDUINO) - SDIO_SCK
+        pinDNU[12] = PC8; //(DO NOT USE FOR SPEEDUINO) - SDIO_D0
+        pinDNU[13] = PC9; //(DO NOT USE FOR SPEEDUINO) - SDIO_D1
+        pinDNU[14] = PC10; //(DO NOT USE FOR SPEEDUINO) - SDIO_D2
+        pinDNU[15] = PC11; //(DO NOT USE FOR SPEEDUINO) - SDIO_D3
+        pinDNU[4] = PC12; //(DO NOT USE FOR SPEEDUINO) - SDIO_SCK
         pinTachOut = PC13; //
         /* = PC14; */ //(DO NOT USE FOR SPEEDUINO) - OSC32_IN
         /* = PC15; */ //(DO NOT USE FOR SPEEDUINO) - OSC32_OUT
@@ -1906,9 +1906,9 @@ void setPinMapping(byte boardID)
         //******************************************
         //******** PORTD CONNECTIONS *************** 
         //******************************************
-        /* = PD0; */ //CANRX
-        /* = PD1; */ //CANTX
-        /* = PD2; */ //(DO NOT USE FOR SPEEDUINO) - SDIO_CMD
+        pinDNU[5] = PD0; //CANRX
+        pinDNU[8] = PD1; //CANTX
+        pinDNU[16] = PD2; //(DO NOT USE FOR SPEEDUINO) - SDIO_CMD
         /* = PD3; */ //
         /* = PD4; */ //
         pinFlex = PD4;
@@ -1928,8 +1928,8 @@ void setPinMapping(byte boardID)
         //******************************************
         //******** PORTE CONNECTIONS *************** 
         //******************************************
-        pinTrigger = PE0; //
-        pinTrigger2 = PE1; //
+        pinTrigger2 = PE0; //
+        pinTrigger = PE1; //
         pinStepperEnable = PE2; //
         /* = PE3; */ //ONBOARD KEY1
         /* = PE4; */ //ONBOARD KEY2
