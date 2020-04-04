@@ -106,11 +106,6 @@ void command()
       Serial.print(F("001"));
       break;
 
-    case 'f': // Format flash function for testing/debugging
-      EEPROM.formatFlashForUse();
-      break;
-
-
     case 'H': //Start the tooth logger
       currentStatus.toothLogEnabled = true;
       currentStatus.compositeLogEnabled = false; //Safety first (Should never be required)
