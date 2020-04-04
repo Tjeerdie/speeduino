@@ -413,7 +413,7 @@ extern volatile byte LOOP_TIMER;
 #define pinIsInjector(pin)  ( ((pin) == pinInjector1) || ((pin) == pinInjector2) || ((pin) == pinInjector3) || ((pin) == pinInjector4) )
 #define pinIsIgnition(pin)  ( ((pin) == pinCoil1) || ((pin) == pinCoil2) || ((pin) == pinCoil3) || ((pin) == pinCoil4) || ((pin) == pinCoil5) || ((pin) == pinCoil6) || ((pin) == pinCoil7) || ((pin) == pinCoil8) )
 #define pinIsSensor(pin)    ( ((pin) == pinCLT) || ((pin) == pinIAT) || ((pin) == pinMAP) || ((pin) == pinTPS) || ((pin) == pinO2) || ((pin) == pinBat) )
-#define pinIsOther(pin)     ( ((pin) == pinDoNotUseForOtherReason_0) || ((pin) == pinDoNotUseForOtherReason_1) || ((pin) == pinDoNotUseForOtherReason_2) || ((pin) == pinDoNotUseForOtherReason_3) || ((pin) == pinDoNotUseForOtherReason_4) || ((pin) == pinDoNotUseForOtherReason_5) || ((pin) == pinDoNotUseForOtherReason_6) || ((pin) == pinDoNotUseForOtherReason_7) || ((pin) == pinDoNotUseForOtherReason_8) || ((pin) == pinDoNotUseForOtherReason_9) || ((pin) == pinDoNotUseForOtherReason_10) || ((pin) == pinDoNotUseForOtherReason_11) || ((pin) == pinDoNotUseForOtherReason_12) || ((pin) == pinDoNotUseForOtherReason_13) || ((pin) == pinDoNotUseForOtherReason_14))
+#define pinIsOther(pin)     ( ((pin) == pinDNU[0]) || ((pin) == pinDNU[1]) || ((pin) == pinDNU[2]) || ((pin) == pinDNU[3]) || ((pin) == pinDNU[4]) || ((pin) == pinDNU[5]) || ((pin) == pinDNU[6]) || ((pin) == pinDNU[7]) || ((pin) == pinDNU[8]) || ((pin) == pinDNU[9]) || ((pin) == pinDNU[10]) || ((pin) == pinDNU[11]) || ((pin) == pinDNU[12]) || ((pin) == pinDNU[13]) || ((pin) == pinDNU[14]) || ((pin) == pinDNU[15])|| ((pin) == pinDNU[16])|| ((pin) == pinDNU[17])|| ((pin) == pinDNU[18])|| ((pin) == pinDNU[19]))
 #define pinIsUsed(pin)      ( pinIsInjector((pin)) || pinIsIgnition((pin)) || pinIsSensor((pin)) || pinIsOther((pin)))
 #define pinIsOutput(pin)    ( ((pin) == pinFuelPump) || ((pin) == pinFan) || ((pin) == pinVVT_1) || ((pin) == pinVVT_2) || ((pin) == pinBoost) || ((pin) == pinIdle1) || ((pin) == pinIdle2) || ((pin) == pinTachOut) )
 
@@ -1098,22 +1098,7 @@ extern byte pinResetControl; // Output pin used control resetting the Arduino
 
 //Assign these to other pins that have a different function. This will prevent them for being used as 
 //other aux functions and will brake the serial/usb/spi flash
-extern byte pinDoNotUseForOtherReason_0; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_1; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_2; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_3; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_4; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_5; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_6; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_7; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_8; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_9; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_10; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_11; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_12; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_13; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_14; //Pin asaignment for serial/can/spi flash etc
-extern byte pinDoNotUseForOtherReason_15; //Pin asaignment for serial/can/spi flash etc
+extern byte pinDNU[20];
 
 #ifdef USE_MC33810
   //If the MC33810 IC\s are in use, these are the chip select pins
