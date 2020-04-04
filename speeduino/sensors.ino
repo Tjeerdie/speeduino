@@ -57,7 +57,6 @@ void initialiseADC()
 
   //The following checks the aux inputs and initialises pins if required
   auxIsEnabled = false;
-  volatile uint8_t ReadTestByte = EEPROM.read(3);
   for (byte AuxinChan = 0; AuxinChan <16 ; AuxinChan++)
   {
     currentStatus.current_caninchannel = AuxinChan;                   
@@ -102,11 +101,10 @@ void initialiseADC()
          //currentStatus.canin[14] = 44;  Dev test use only!
          auxIsEnabled = true;
        }  
-    
+
     }
-    ReadTestByte = EEPROM.read(3);
   } //For loop iterating through aux in lines
-  
+
   //Sanity checks to ensure none of the filter values are set above 240 (Which would include the 255 value which is the default on a new arduino)
   //If an invalid value is detected, it's reset to the default the value and burned to EEPROM. 
   //Each sensor has it's own default value
