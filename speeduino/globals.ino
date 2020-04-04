@@ -199,6 +199,26 @@ byte pinIgnBypass; //The pin used for an ignition bypass (Optional)
 byte pinFlex; //Pin with the flex sensor attached
 byte pinBaro; //Pin that an al barometric pressure sensor is attached to (If used)
 byte pinResetControl; // Output pin used control resetting the Arduino
+
+byte pinDoNotUseForOtherReason_0; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_1; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_2; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_3; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_4; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_5; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_6; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_7; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_8; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_9; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_10; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_11; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_12; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_13; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_14; //Pin asaignment for serial/can/spi flash etc
+byte pinDoNotUseForOtherReason_15; //Pin asaignment for serial/can/spi flash etc
+
+
+
 #ifdef USE_MC33810
   //If the MC33810 IC\s are in use, these are the chip select pins
   byte pinMC33810_1_CS;

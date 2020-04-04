@@ -1862,23 +1862,23 @@ void setPinMapping(byte boardID)
         pinFuelPump = PA6; //ADC12 LED_BUILTIN_1
         /* = PA7; */ //ADC12 LED_BUILTIN_2
         pinCoil3 = PA8;
-        /* = PA9 */ //TXD1
-        /* = PA10 */ //RXD1
-        /* = PA11 */ //(DO NOT USE FOR SPEEDUINO) USB
-        /* = PA12 */ //(DO NOT USE FOR SPEEDUINO) USB 
-        /* = PA13 */ //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
-        /* = PA14 */ //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
-        /* = PA15 */ //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
+        pinDoNotUseForOtherReason_0 = PA9; //TXD1
+        pinDoNotUseForOtherReason_1 = PA10; //RXD1
+        pinDoNotUseForOtherReason_2 = PA11; //(DO NOT USE FOR SPEEDUINO) USB
+        pinDoNotUseForOtherReason_3 = PA12; //(DO NOT USE FOR SPEEDUINO) USB 
+        //pinDoNotUseForOtherReason_4 = PA13; //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
+        //pinDoNotUseForOtherReason_5 = PA14; //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
+        pinDoNotUseForOtherReason_6 = PA15; //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
 
         //******************************************
         //******** PORTB CONNECTIONS *************** 
         //******************************************
-        /* = PB0; */ //(DO NOT USE FOR SPEEDUINO) ADC123 - SPI FLASH CHIP CS pin
+        pinDoNotUseForOtherReason_7 = PB0; //(DO NOT USE FOR SPEEDUINO) ADC123 - SPI FLASH CHIP CS pin
         pinBaro = PB1; //ADC12
-        /* = PB2; */ //(DO NOT USE FOR SPEEDUINO) BOOT1 
-        /* = PB3; */ //(DO NOT USE FOR SPEEDUINO) SPI1_SCK FLASH CHIP
-        /* = PB4; */ //(DO NOT USE FOR SPEEDUINO) SPI1_MISO FLASH CHIP
-        /* = PB5; */ //(DO NOT USE FOR SPEEDUINO) SPI1_MOSI FLASH CHIP
+        //pinDoNotUseForOtherReason_8 = PB2; //(DO NOT USE FOR SPEEDUINO) BOOT1 
+        pinDoNotUseForOtherReason_9 = PB3; //(DO NOT USE FOR SPEEDUINO) SPI1_SCK FLASH CHIP
+        pinDoNotUseForOtherReason_10 = PB4; //(DO NOT USE FOR SPEEDUINO) SPI1_MISO FLASH CHIP
+        pinDoNotUseForOtherReason_11 = PB5; //(DO NOT USE FOR SPEEDUINO) SPI1_MOSI FLASH CHIP
         /* = PB6; */ //NRF_CE
         /* = PB7; */ //NRF_CS
         /* = PB8; */ //NRF_IRQ
@@ -1916,7 +1916,7 @@ void setPinMapping(byte boardID)
         //******************************************
         //******** PORTD CONNECTIONS *************** 
         //******************************************
-        /* = PD0; */ //CANRX
+        // = PD0; */ //CANRX
         /* = PD1; */ //CANTX
         /* = PD2; */ //(DO NOT USE FOR SPEEDUINO) - SDIO_CMD
         /* = PD3; */ //
