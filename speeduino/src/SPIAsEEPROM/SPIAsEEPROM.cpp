@@ -212,7 +212,7 @@ uint8_t SPIAsEEPROM::read(uint16_t addressEEPROM){
     //Calulate the adress from all previous information.
     dataFlashAddress = sectorNumber*SECTORSIZE  + (pageNumber * FLASH_PAGESIZE) + INFOBYTESSECTOROFFSET + nrOfOnes - 1;
 
-    uint8_t ByteBuf[10];
+    uint8_t ByteBuf[1];
     //read the actual byte with information
 
     winbondSPIFlash.read(dataFlashAddress, ByteBuf, sizeof(ByteBuf));

@@ -107,7 +107,11 @@ void command()
       break;
 
     case 'f': // Format flash function for testing/debugging
-      // EEPROM.clear();
+      #if defined(USE_SPI_EEPROM)
+        Serial.println("Formatting Flash EEPROM"); //Formatting takes a couple of seconds
+        EEPROM.clear();
+        Serial.println("Formatted Flash EEPROM");
+      #endif
       break;
 
 
