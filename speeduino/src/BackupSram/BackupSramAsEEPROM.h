@@ -21,6 +21,7 @@ class BackupSramAsEEPROM {
     uint8_t read(uint16_t address);  
     int8_t write(uint16_t address, uint8_t val);
     int8_t update(uint16_t address, uint8_t val);
+    int8_t clear();
 };
 
 extern BackupSramAsEEPROM EEPROM;

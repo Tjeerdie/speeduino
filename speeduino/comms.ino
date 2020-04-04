@@ -107,7 +107,7 @@ void command()
       break;
 
     case 'f': // Format flash function for testing/debugging
-      EEPROM.formatFlashForUse();
+      // EEPROM.clear();
       break;
 
 

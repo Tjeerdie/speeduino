@@ -70,10 +70,11 @@ class SPIAsEEPROM {
     
     SPIAsEEPROM();
     uint8_t begin(uint8_t pinSPIFlash_CS);
-    uint8_t formatFlashForUse();
+    int8_t formatFlashForUse();
     uint8_t read(uint16_t addressEEPROM);  
     int8_t write(uint16_t addressEEPROM, uint8_t val);
     int8_t update(uint16_t address, uint8_t val);
+    int8_t clear();
 };
 
 extern SPIAsEEPROM EEPROM;

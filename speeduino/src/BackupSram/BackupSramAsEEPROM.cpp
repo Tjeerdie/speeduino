@@ -71,6 +71,13 @@
         return 0;
     }
 
+    int8_t BackupSramAsEEPROM::clear(){
+      for (uint16_t i=0; i < 4096; i++) {
+        write(i, 0XFF);
+      }
+      return 0;
+    }
+
 BackupSramAsEEPROM EEPROM;
 
 #endif
