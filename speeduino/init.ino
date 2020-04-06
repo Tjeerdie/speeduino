@@ -1916,9 +1916,9 @@ void setPinMapping(byte boardID)
         /* = PD6; */ //RXD2
         pinCoil1 = PD7; //
         /* = PD7; */ //
-        /* = PD8; */ //
-        pinCoil5 = PD9;//
-        /* = PD10; */ //
+        pinDNU[17] = PD8; //Bluetooth RX
+        pinDNU[18] = PD9;//BLuetooth TX
+        pinCoil5 = PD10; //
         /* = PD11; */ //
         pinInjector1 = PD12; //
         pinInjector2 = PD13; //
@@ -1944,7 +1944,7 @@ void setPinMapping(byte boardID)
         /* = PE13; */ //
         /* = PE14; */ //
         /* = PE15; */ //
-       
+
      #elif defined(CORE_STM32)
         //blue pill wiki.stm32duino.com/index.php?title=Blue_Pill
         //Maple mini wiki.stm32duino.com/index.php?title=Maple_Mini

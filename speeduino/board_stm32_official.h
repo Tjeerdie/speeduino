@@ -239,13 +239,5 @@ void ignitionSchedule7Interrupt(HardwareTimer*);
 void ignitionSchedule8Interrupt(HardwareTimer*);
 #endif
 
-/*
-***********************************************************************************************************
-* CAN / Second serial
-*/
-#if defined(ARDUINO_BLACK_F407VE)
-//HardwareSerial CANSerial(PD6, PD5);
-#endif
-
 #endif //CORE_STM32
 #endif //STM32_H
