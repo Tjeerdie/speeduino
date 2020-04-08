@@ -22,8 +22,8 @@ bool canCmdPending = false;
   #endif
   #if defined(STM32GENERIC) // STM32GENERIC core
     SerialUART &CANSerial = Serial2;
-  #elif defined(CORE_STM32_OFFICIAL)
-    HardwareSerial CANSerial(PD9, PD8); //define serial TX=PD8 RX=PD9 as can serial for official core Serial2 not defined in Ststm32 core 
+  // #elif defined(CORE_STM32_OFFICIAL)
+  //   HardwareSerial CANSerial(PD9, PD8); //define serial TX=PD8 RX=PD9 as can serial for official core Serial2 not defined in Ststm32 core 
   #else //libmaple core aka STM32DUINO
     HardwareSerial &CANSerial = Serial2;
   #endif
