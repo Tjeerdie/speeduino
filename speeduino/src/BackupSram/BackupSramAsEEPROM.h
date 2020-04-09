@@ -8,7 +8,12 @@
 #define EEPROM_h
 
 #include <stdint.h>
-#include "stm32f407xx.h"
+#if defined(STM32F4)
+  #include "system_stm32f4xx.h"
+#else 
+  #include "system_stm32f1xx.h"
+#endif
+
 
 class BackupSramAsEEPROM {
   private: 

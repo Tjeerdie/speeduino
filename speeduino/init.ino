@@ -2013,15 +2013,15 @@ void setPinMapping(byte boardID)
         //******************************************
         /* = PA0 */ //Wakeup ADC123
         // = PA1;
-        // = PA2;
-        // = PA3;
-        // = PA4;
-        /* = PA5; */ //ADC12
+        pinDNU[17] = PA2; //RX2
+        pinDNU[18] = PA3; //TX2
+        // = PA4; 
+        // = PA5;   //ADC12
         pinFuelPump = PA6; //ADC12 LED_BUILTIN_1
         /* = PA7; */ //ADC12 LED_BUILTIN_2
         pinCoil3 = PA8;
-        pinDNU[0] = PA9; //TXD1
-        pinDNU[1] = PA10; //RXD1
+        pinDNU[0] = PA9; //TXD1 //Bluetooth RX
+        pinDNU[1] = PA10; //RXD1 //Bluetooth TX
         pinDNU[2] = PA11; //(DO NOT USE FOR SPEEDUINO) USB
         pinDNU[3] = PA12; //(DO NOT USE FOR SPEEDUINO) USB 
         //pinDNU[4] = PA13; //(DO NOT USE FOR SPEEDUINO) NOT ON GPIO - DEBUG ST-LINK
@@ -2080,12 +2080,12 @@ void setPinMapping(byte boardID)
         /* = PD3; */ //
         /* = PD4; */ //
         pinFlex = PD4;
-        /* = PD5;*/ //TXD2
-        /* = PD6; */ //RXD2
+        // = PD5; 
+        // = PD6; 
         pinCoil1 = PD7; //
         /* = PD7; */ //
-        pinDNU[17] = PD8; //Bluetooth RX
-        pinDNU[18] = PD9;//BLuetooth TX
+        // = PD8; //
+        // = PD9; //
         pinCoil5 = PD10; //
         /* = PD11; */ //
         pinInjector1 = PD12; //
@@ -2096,8 +2096,8 @@ void setPinMapping(byte boardID)
         //******************************************
         //******** PORTE CONNECTIONS *************** 
         //******************************************
-        pinTrigger2 = PE0; //
-        pinTrigger = PE1; //
+        pinTrigger = PE0; //
+        pinTrigger2 = PE1; //
         pinStepperEnable = PE2; //
         /* = PE3; */ //ONBOARD KEY1
         /* = PE4; */ //ONBOARD KEY2
