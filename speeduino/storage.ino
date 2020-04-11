@@ -423,7 +423,7 @@ void writeConfig(byte tableNum)
     default:
       break;
   }
-  if(eepromWritesPending == false) {flushBufferConfig();}
+  if((eepromWritesPending == false)& (writeCounter!=0)) {flushBufferConfig();}
   
 
 }
