@@ -70,11 +70,11 @@ extern "C" char* sbrk(int incr);
 ***********************************************************************************************************
 * Storage solution
 */
-byte readByteConfig(uint16_t address);
-int8_t writeByteConfig(uint16_t address, uint8_t value);
-int8_t updateByteConfig(uint16_t address, uint8_t value);
-int8_t flushBufferConfig();
-int8_t fillBufferConfig();
+static inline byte readByteConfig(uint16_t address);
+static inline int8_t writeByteConfig(uint16_t address, uint8_t value);
+static inline int8_t updateByteConfig(uint16_t address, uint8_t value);
+static inline int8_t flushBufferConfig();
+static inline int8_t fillBufferConfig();
 
 /*
 ***********************************************************************************************************
