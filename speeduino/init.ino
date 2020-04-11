@@ -2043,7 +2043,7 @@ void setPinMapping(byte boardID)
         pinCoil2 = PB9; //
         /* = PB9; */ //
         pinCoil4 = PB10; //TXD3
-        pinIdle1 = PB11; //RXD3
+        // = PB11; //RXD3
         pinIdle2 = PB12; //
         /* pinBoost = PB12; */ //
         /* = PB13; */ //SPI2_SCK
@@ -2058,7 +2058,7 @@ void setPinMapping(byte boardID)
         pinIAT = PC2; //ADC123
         pinCLT = PC3; //ADC123
         pinO2 = PC4; //ADC12
-        /* = PC5; */ //ADC12
+        // = PC5; //ADC12
         /*pinVVT_1 = PC6; */ //
         pinBat = PC6; //
         pinDisplayReset = PC7; //
@@ -2077,7 +2077,7 @@ void setPinMapping(byte boardID)
         pinDNU[5] = PD0; //CANRX
         pinDNU[8] = PD1; //CANTX
         pinDNU[16] = PD2; //(DO NOT USE FOR SPEEDUINO) - SDIO_CMD
-        /* = PD3; */ //
+        pinIdle1 = PD3; //
         /* = PD4; */ //
         pinFlex = PD4;
         // = PD5; 
@@ -2096,8 +2096,8 @@ void setPinMapping(byte boardID)
         //******************************************
         //******** PORTE CONNECTIONS *************** 
         //******************************************
-        pinTrigger = PE0; //
-        pinTrigger2 = PE1; //
+        pinTrigger2 = PE0; //
+        pinTrigger = PE1; //
         pinStepperEnable = PE2; //
         /* = PE3; */ //ONBOARD KEY1
         /* = PE4; */ //ONBOARD KEY2
@@ -2112,6 +2112,7 @@ void setPinMapping(byte boardID)
         /* = PE13; */ //
         /* = PE14; */ //
         /* = PE15; */ //
+
 
      #elif defined(CORE_STM32)
         //blue pill wiki.stm32duino.com/index.php?title=Blue_Pill
