@@ -36,6 +36,16 @@
 
 /*
 ***********************************************************************************************************
+* Storage solution
+*/
+byte readByteConfig(uint16_t address);
+static inline int8_t writeByteConfig(uint16_t address, uint8_t value);
+static inline int8_t updateByteConfig(uint16_t address, uint8_t value);
+static inline int8_t flushBufferConfig();
+static inline int8_t fillBufferConfig();
+
+/*
+***********************************************************************************************************
 * Schedules
 */
   //Refer to svn.savannah.nongnu.org/viewvc/trunk/avr-libc/include/avr/iomxx0_1.h?root=avr-libc&view=markup

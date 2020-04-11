@@ -9,7 +9,29 @@
   //We need to include and make a instance of the SPI flash EEPROM emulation if flag is set.
   #include "src/SPIAsEEPROM/SPIAsEEPROM.h"
   SPIAsEEPROM EEPROM;
+#else
+  #include "EEPROM.h"
 #endif
+
+  byte readByteConfig(uint16_t address){
+    return eeprom_buffered_read_byte(address);
+  }
+  int8_t writeByteConfig(uint16_t address, uint8_t value){
+    eeprom_buffered_write_byte(address, value);
+    return 0;
+  }
+  int8_t updateByteConfig(uint16_t address, uint8_t value){
+    eeprom_buffered_write_byte(address, value);
+    return 0;
+  }
+  int8_t flushBufferConfig(){
+    eeprom_buffer_flush();
+    return 0;
+  }
+  int8_t fillBufferConfig(){
+    eeprom_buffer_fill();
+    return 0;
+  }
 
   void initBoard()
   {

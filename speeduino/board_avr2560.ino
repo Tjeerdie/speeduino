@@ -2,6 +2,7 @@
 #if defined(CORE_AVR)
 #include "globals.h"
 #include "auxiliaries.h"
+#include EEPROM_LIB_H //This is defined in the board .h files
 
 // Prescaler values for timers 1-3-4-5. Refer to www.instructables.com/files/orig/F3T/TIKL/H3WSA4V7/F3TTIKLH3WSA4V7.jpg
 #define TIMER_PRESCALER_OFF  ((0<<CS12)|(0<<CS11)|(0<<CS10))
@@ -108,6 +109,24 @@ uint16_t freeRam()
     return (uint16_t) &v - currentVal; //cppcheck-suppress misra-c2012-11.4
 }
 
+byte readByteConfig(uint16_t address){
+    return EEPROM.read(address);
+}
+int8_t writeByteConfig(uint16_t address, uint8_t value){
+    EEPROM.write(address, value);
+    return 0;
+}
+int8_t updateByteConfig(uint16_t address, uint8_t value){
+    EEPROM.update(address, value);
+    return 0;
+}
+int8_t flushBufferConfig(){
+    return 0;
+}
+int8_t fillBufferConfig(){
+    return 0;
+}
+
 #if defined(TIMER5_MICROS)
 //This is used by the fast version of micros(). We just need to increment the timer overflow counter
 ISR(TIMER5_OVF_vect)
@@ -125,5 +144,8 @@ static inline unsigned long micros_safe()
   return newMicros;
 } 
 #endif //TIMER5_MICROS
+
+
+
 
 #endif //CORE_AVR

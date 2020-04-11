@@ -66,6 +66,15 @@ extern "C" char* sbrk(int incr);
     #define A15  PA5
   #endif
 #endif
+/*
+***********************************************************************************************************
+* Storage solution
+*/
+static inline byte readByteConfig(uint16_t address);
+static inline int8_t writeByteConfig(uint16_t address, uint8_t value);
+static inline int8_t updateByteConfig(uint16_t address, uint8_t value);
+static inline int8_t flushBufferConfig();
+static inline int8_t fillBufferConfig();
 
 /*
 ***********************************************************************************************************
