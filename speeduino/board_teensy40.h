@@ -139,15 +139,6 @@
   FlexCAN_T4<CAN3, RX_SIZE_256, TX_SIZE_16> Can2;
   static CAN_message_t outMsg;
   static CAN_message_t inMsg;
-/*
-***********************************************************************************************************
-* Storage solution
-*/
-  static inline byte readByteConfig(uint16_t address);
-  static inline int8_t writeByteConfig(uint16_t address, uint8_t value);
-  static inline int8_t updateByteConfig(uint16_t address, uint8_t value);
-  static inline int8_t flushBufferConfig();
-  static inline int8_t fillBufferConfig();
-    
+  
 #endif //CORE_TEENSY
 #endif //TEENSY40_H

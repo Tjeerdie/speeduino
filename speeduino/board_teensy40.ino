@@ -4,7 +4,6 @@
 #include "auxiliaries.h"
 #include "idle.h"
 #include "scheduler.h"
-#include EEPROM_LIB_H //This is defined in the board .h files
 
 
 void initBoard()
@@ -70,22 +69,5 @@ uint16_t freeRam()
     return (uint16_t)stackTop - heapTop;
 }
 
-byte readByteConfig(uint16_t address){
-    return EEPROM.read(address);
-}
-int8_t writeByteConfig(uint16_t address, uint8_t value){
-    EEPROM.write(address, value);
-    return 0;
-}
-int8_t updateByteConfig(uint16_t address, uint8_t value){
-    EEPROM.update(address, value);
-    return 0;
-}
-int8_t flushBufferConfig(){
-    return 0;
-}
-int8_t fillBufferConfig(){
-    return 0;
-}
 
 #endif
