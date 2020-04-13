@@ -136,7 +136,7 @@ void command()
       Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGSERR) != RESET);
       Serial.print("Time ms: ");
       Serial.println(millis(), DEC);
-      // clearConfig();
+      clearConfig();
       
       //flushBufferConfig();
       
@@ -1775,7 +1775,7 @@ void receiveCalibration(byte tableID)
     }
 
   }
-
+  flushConfigBuffer();
 }
 
 /*

@@ -10,40 +10,42 @@
   #include "src/SPIAsEEPROM/SPIAsEEPROM.h"
   SPIAsEEPROM EEPROM;
 #else
-  #include "EEPROM.h"
+  #include "stm32_eeprom.h"
 #endif
 
-  byte readByteConfig(uint16_t address){
+  byte readConfigByte(uint16_t address){
     return eeprom_buffered_read_byte(address);
   }
-  int8_t writeByteConfig(uint16_t address, uint8_t value){
+  int8_t writeConfigByte(uint16_t address, uint8_t value){
     eeprom_buffered_write_byte(address, value);
     return 0;
   }
-  int8_t updateByteConfig(uint16_t address, uint8_t value){
+  int8_t updateConfigByte(uint16_t address, uint8_t value){
     if(eeprom_buffered_read_byte(address) != value){
       eeprom_buffered_write_byte(address, value);
     }
     return 0;
   }
-  int8_t flushBufferConfig(){
-    //some how speeduino does access the flesh at some position setting al kinds of error flags. reset these for trying to commit to flash 
-    //if not cleared write to flash will fail. 
+  int8_t flushConfigBuffer(){
+    //some how speeduino does access the flash at some position setting al kinds of error flags. 
+    //Reset these for trying to commit to flash if not cleared write to flash will fail. 
+    //The problem is unitilized pointers automaticly point to flash adresses causing errors
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR | FLASH_FLAG_OPERR);
     eeprom_buffer_flush();
     return 0;
   }
-  int8_t fillBufferConfig(){
+
+  int8_t fillConfigBuffer(){
     eeprom_buffer_fill();
     return 0;
-  }
+  } 
 
   int8_t clearConfig(){
-    for (uint16_t i = 0; i < EEPROM.length(); i++)
+    for (uint16_t i = 0; i < FLASH_PAGE_SIZE; i++)
     {
-      writeByteConfig(i, 0xFF);
+      writeConfigByte(i, 0xFF);
     }
-    flushBufferConfig();
+    flushConfigBuffer();
     return 0;
   }
 
