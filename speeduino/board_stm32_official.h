@@ -29,6 +29,8 @@
     #define EEPROM_LIB_H "src/SPIAsEEPROM/SPIAsEEPROM.h"
 #elif defined(FRAM_AS_EEPROM) //https://github.com/VitorBoss/FRAM
     #define EEPROM_LIB_H <Fram.h>
+#elif defined(USE_STM32FLASH_EEPROM) //https://github.com/VitorBoss/FRAM
+    #define EEPROM_LIB_H "src/FlashAsEEPROM/STM32FlashAsEEPROM.h"
 #else
     #define EEPROM_LIB_H <EEPROM.h>
 #endif
