@@ -109,23 +109,32 @@ uint16_t freeRam()
     return (uint16_t) &v - currentVal; //cppcheck-suppress misra-c2012-11.4
 }
 
-byte readByteConfig(uint16_t address){
+byte readConfigByte(uint16_t address){
     return EEPROM.read(address);
 }
-int8_t writeByteConfig(uint16_t address, uint8_t value){
+int8_t writeConfigByte(uint16_t address, uint8_t value){
     EEPROM.write(address, value);
     return 0;
 }
-int8_t updateByteConfig(uint16_t address, uint8_t value){
+int8_t updateConfigByte(uint16_t address, uint8_t value){
     EEPROM.update(address, value);
     return 0;
 }
-int8_t flushBufferConfig(){
+int8_t flushConfigBuffer(){
     return 0;
 }
-int8_t fillBufferConfig(){
+int8_t fillConfigBuffer(){
     return 0;
 }
+
+ int8_t clearConfig(){
+    for (uint16_t i = 0; i < EEPROM.length(); i++)
+    {
+      writeConfigByte(i, 0xFF);
+    }
+    flushConfigBuffer();
+    return 0;
+  }
 
 #if defined(TIMER5_MICROS)
 //This is used by the fast version of micros(). We just need to increment the timer overflow counter

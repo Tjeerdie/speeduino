@@ -285,21 +285,30 @@ void initBoard()
     NVIC_ENABLE_IRQ(IRQ_FTM3);
 }
 
-byte readByteConfig(uint16_t address){
+byte readConfigByte(uint16_t address){
     return EEPROM.read(address);
 }
-int8_t writeByteConfig(uint16_t address, uint8_t value){
+int8_t writeConfigByte(uint16_t address, uint8_t value){
     EEPROM.write(address, value);
     return 0;
 }
-int8_t updateByteConfig(uint16_t address, uint8_t value){
+int8_t updateConfigByte(uint16_t address, uint8_t value){
     EEPROM.update(address, value);
     return 0;
 }
-int8_t flushBufferConfig(){
+int8_t flushConfigBuffer(){
     return 0;
 }
-int8_t fillBufferConfig(){
+int8_t fillConfigBuffer(){
+    return 0;
+}
+
+int8_t clearConfig(){
+    for (uint16_t i = 0; i < EEPROM.length(); i++)
+    {
+        writeConfigByte(i, 0xFF);
+    }
+    flushConfigBuffer();
     return 0;
 }
 
