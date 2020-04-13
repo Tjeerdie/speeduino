@@ -4,7 +4,6 @@ Copyright (C) Josh Stewart
 A full copy of the license may be found in the projects root directory
 */
 
-
 #include "globals.h"
 #include "table.h"
 #include "comms.h"
@@ -23,7 +22,9 @@ void writeAllConfig()
   if (eepromWritesPending == false) { writeConfig(seqFuelPage); }
   if (eepromWritesPending == false) { writeConfig(canbusPage); }
   if (eepromWritesPending == false) { writeConfig(warmupPage); }
-  if (eepromWritesPending == false) { writeConfig(fuelMap2Page); }
+  if (eepromWritesPending == false) { writeConfig(fuelMap2Page);}
+  if (eepromWritesPending == false) { flushBufferConfig();}
+  
 }
 
 
@@ -423,7 +424,9 @@ void writeConfig(byte tableNum)
     default:
       break;
   }
-  if(eepromWritesPending == false) {flushBufferConfig();}
+  if((eepromWritesPending == false) && (writeCounter >= 1)) {
+    //flushBufferConfig();
+    }
   
 
 }

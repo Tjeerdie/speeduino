@@ -21,15 +21,29 @@
     return 0;
   }
   int8_t updateByteConfig(uint16_t address, uint8_t value){
-    eeprom_buffered_write_byte(address, value);
+    if(eeprom_buffered_read_byte(address) != value){
+      eeprom_buffered_write_byte(address, value);
+    }
     return 0;
   }
   int8_t flushBufferConfig(){
+    //some how speeduino does access the flesh at some position setting al kinds of error flags. reset these for trying to commit to flash 
+    //if not cleared write to flash will fail. 
+    __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR | FLASH_FLAG_OPERR);
     eeprom_buffer_flush();
     return 0;
   }
   int8_t fillBufferConfig(){
     eeprom_buffer_fill();
+    return 0;
+  }
+
+  int8_t clearConfig(){
+    for (uint16_t i = 0; i < EEPROM.length(); i++)
+    {
+      writeByteConfig(i, 0xFF);
+    }
+    flushBufferConfig();
     return 0;
   }
 
@@ -39,10 +53,10 @@
     ***********************************************************************************************************
     * General
     */
-    #ifndef FLASH_LENGTH
-      #define FLASH_LENGTH 8192
-    #endif
-    delay(10);
+    // #ifndef FLASH_LENGTH
+    //   #define FLASH_LENGTH 8192
+    // #endif
+    // delay(10);
     /*
     ***********************************************************************************************************
     * Idle
