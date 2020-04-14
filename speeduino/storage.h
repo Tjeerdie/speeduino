@@ -3,24 +3,9 @@
 
 #include "globals.h"
 
-void writeAllConfig();
-void writeConfig(byte);
-void loadConfig();
-void loadCalibration();
-void writeCalibration();
-
-//These are utility functions that prevent other files from having to use EEPROM.h directly
-byte readLastBaro();
-void storeLastBaro(byte);
-void storeCalibrationValue(uint16_t, byte);
-byte readEEPROMVersion();
-void storeEEPROMVersion(byte);
-void storePageCRC32(byte, uint32_t);
-uint32_t readPageCRC32(byte);
-
 //SPI_EEPROM is also fairly slow. Therefore we must limit the amount of writes per try.
 #if (defined(CORE_STM32) || defined(CORE_TEENSY)) && !defined(USE_SPI_EEPROM)
-#define EEPROM_MAX_WRITE_BLOCK 64 //The maximum number of write operations that will be performed in one go. If we try to write to the EEPROM too fast (Each write takes ~3ms) then the rest of the system can hang)
+#define EEPROM_MAX_WRITE_BLOCK 63 //The maximum number of write operations that will be performed in one go. If we try to write to the EEPROM too fast (Each write takes ~3ms) then the rest of the system can hang)
 #else
 #define EEPROM_MAX_WRITE_BLOCK 30 //The maximum number of write operations that will be performed in one go. If we try to write to the EEPROM too fast (Each write takes ~3ms) then the rest of the system can hang)
 #endif
@@ -157,5 +142,24 @@ Current layout of EEPROM data (Version 3) is as follows (All sizes are in bytes)
 #define EEPROM_CALIBRATION_O2 2559
 #define EEPROM_CALIBRATION_IAT 3071
 #define EEPROM_CALIBRATION_CLT 3583
+
+#define FLUSHBUFFER 1   
+
+
+void writeAllConfig();
+void writeConfig(byte tableNum, byte BufferFlush = FLUSHBUFFER);
+void loadConfig();
+void loadCalibration();
+void writeCalibration();
+
+//These are utility functions that prevent other files from having to use EEPROM.h directly
+byte readLastBaro();
+void storeLastBaro(byte);
+void storeCalibrationValue(uint16_t, byte);
+byte readEEPROMVersion();
+void storeEEPROMVersion(byte);
+void storePageCRC32(byte, uint32_t);
+uint32_t readPageCRC32(byte);
+
 
 #endif // STORAGE_H

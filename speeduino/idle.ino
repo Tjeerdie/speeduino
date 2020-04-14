@@ -23,6 +23,13 @@ void initialiseIdle()
   //By default, turn off the PWM interrupt (It gets turned on below if needed)
   IDLE_TIMER_DISABLE();
 
+  //pins must always be initialized. 
+  //Otherwise this gives problems when interrupt is running and trying to use the pins
+  idle_pin_port = portOutputRegister(digitalPinToPort(pinIdle1));
+  idle_pin_mask = digitalPinToBitMask(pinIdle1);
+  idle2_pin_port = portOutputRegister(digitalPinToPort(pinIdle2));
+  idle2_pin_mask = digitalPinToBitMask(pinIdle2);
+
   //Initialising comprises of setting the 2D tables with the relevant values from the config pages
   switch(configPage6.iacAlgorithm)
   {
@@ -54,10 +61,7 @@ void initialiseIdle()
       iacCrankDutyTable.values = configPage6.iacCrankDuty;
       iacCrankDutyTable.axisX = configPage6.iacCrankBins;
 
-      idle_pin_port = portOutputRegister(digitalPinToPort(pinIdle1));
-      idle_pin_mask = digitalPinToBitMask(pinIdle1);
-      idle2_pin_port = portOutputRegister(digitalPinToPort(pinIdle2));
-      idle2_pin_mask = digitalPinToBitMask(pinIdle2);
+
       #if defined(CORE_AVR)
         idle_pwm_max_count = 1000000L / (16 * configPage6.idleFreq * 2); //Converts the frequency in Hz to the number of ticks (at 16uS) it takes to complete 1 cycle. Note that the frequency is divided by 2 coming from TS to allow for up to 512hz
       #elif defined(CORE_TEENSY)
@@ -80,10 +84,10 @@ void initialiseIdle()
       iacCrankDutyTable.values = configPage6.iacCrankDuty;
       iacCrankDutyTable.axisX = configPage6.iacCrankBins;
 
-      idle_pin_port = portOutputRegister(digitalPinToPort(pinIdle1));
-      idle_pin_mask = digitalPinToBitMask(pinIdle1);
-      idle2_pin_port = portOutputRegister(digitalPinToPort(pinIdle2));
-      idle2_pin_mask = digitalPinToBitMask(pinIdle2);
+      // idle_pin_port = portOutputRegister(digitalPinToPort(pinIdle1));
+      // idle_pin_mask = digitalPinToBitMask(pinIdle1);
+      // idle2_pin_port = portOutputRegister(digitalPinToPort(pinIdle2));
+      // idle2_pin_mask = digitalPinToBitMask(pinIdle2);
       #if defined(CORE_AVR)
         idle_pwm_max_count = 1000000L / (16 * configPage6.idleFreq * 2); //Converts the frequency in Hz to the number of ticks (at 16uS) it takes to complete 1 cycle. Note that the frequency is divided by 2 coming from TS to allow for up to 512hz
       #elif defined(CORE_TEENSY)
@@ -530,7 +534,7 @@ static inline void idleInterrupt() //Most ARM chips can simply call a function
     {
       //Reversed direction
       *idle_pin_port |= (idle_pin_mask);  // Switch pin high
-      if(configPage6.iacChannels == 1) { *idle2_pin_port &= ~(idle2_pin_mask); } //If 2 idle channels are in use, flip idle2 to be the opposite of idle1
+      // if(configPage6.iacChannels == 1) { *idle2_pin_port &= ~(idle2_pin_mask); } //If 2 idle channels are in use, flip idle2 to be the opposite of idle1
     }
     IDLE_COMPARE = IDLE_COUNTER + (idle_pwm_max_count - idle_pwm_cur_value);
     idle_pwm_state = false;
@@ -543,12 +547,12 @@ static inline void idleInterrupt() //Most ARM chips can simply call a function
       *idle_pin_port |= (idle_pin_mask);  // Switch pin high
       if(configPage6.iacChannels == 1) { *idle2_pin_port &= ~(idle2_pin_mask); } //If 2 idle channels are in use, flip idle2 to be the opposite of idle1
     }
-    else
-    {
-      //Reversed direction
-      *idle_pin_port &= ~(idle_pin_mask);  // Switch pin to low (1 pin mode)
-      if(configPage6.iacChannels == 1) { *idle2_pin_port |= (idle2_pin_mask); } //If 2 idle channels are in use, flip idle2 to be the opposite of idle1
-    }
+    // else
+    // {
+    //   //Reversed direction
+    //   *idle_pin_port &= ~(idle_pin_mask);  // Switch pin to low (1 pin mode)
+    //   if(configPage6.iacChannels == 1) { *idle2_pin_port |= (idle2_pin_mask); } //If 2 idle channels are in use, flip idle2 to be the opposite of idle1
+    // }
     IDLE_COMPARE = IDLE_COUNTER + idle_pwm_target_value;
     idle_pwm_cur_value = idle_pwm_target_value;
     idle_pwm_state = true;

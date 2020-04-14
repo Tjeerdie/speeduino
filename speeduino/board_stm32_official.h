@@ -29,8 +29,6 @@
     #define EEPROM_LIB_H "src/SPIAsEEPROM/SPIAsEEPROM.h"
 #elif defined(FRAM_AS_EEPROM) //https://github.com/VitorBoss/FRAM
     #define EEPROM_LIB_H <Fram.h>
-#elif defined(USE_STM32FLASH_EEPROM) //https://github.com/VitorBoss/FRAM
-    #define EEPROM_LIB_H "src/FlashAsEEPROM/STM32FlashAsEEPROM.h"
 #else
     #define EEPROM_LIB_H <EEPROM.h>
 #endif
@@ -68,6 +66,16 @@ extern "C" char* sbrk(int incr);
     #define A15  PA5
   #endif
 #endif
+/*
+***********************************************************************************************************
+* Storage solution
+*/
+byte readConfigByte(uint16_t address);
+int8_t writeConfigByte(uint16_t address, uint8_t value);
+int8_t updateConfigByte(uint16_t address, uint8_t value);
+int8_t flushConfigBuffer();
+int8_t fillConfigBuffer();
+int8_t clearConfig();
 
 /*
 ***********************************************************************************************************

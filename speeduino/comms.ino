@@ -112,6 +112,34 @@ void command()
         EEPROM.clear();
         Serial.println("Formatted Flash EEPROM");
       #endif
+      // Serial.print("FLASH_FLAG_OPERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_OPERR) != RESET);
+      // Serial.print("FLASH_FLAG_WRPERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_WRPERR) != RESET);
+      // Serial.print("FLASH_FLAG_PGAERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGAERR) != RESET);
+      // Serial.print("FLASH_FLAG_PGPERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGPERR) != RESET);
+      // Serial.print("FLASH_FLAG_PGSERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGSERR) != RESET);
+      // __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR | FLASH_FLAG_WRPERR | FLASH_FLAG_OPERR);
+      
+      // Serial.print("FLASH_FLAG_OPERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_OPERR) != RESET);
+      // Serial.print("FLASH_FLAG_WRPERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_WRPERR) != RESET);
+      // Serial.print("FLASH_FLAG_PGAERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGAERR) != RESET);
+      // Serial.print("FLASH_FLAG_PGPERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGPERR) != RESET);
+      // Serial.print("FLASH_FLAG_PGSERR: ");
+      // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGSERR) != RESET);
+      // Serial.print("Time ms: ");
+      // Serial.println(millis(), DEC);
+      clearConfig();
+      
+      //flushConfigBuffer();
+      
       break;
 
 
@@ -1747,7 +1775,7 @@ void receiveCalibration(byte tableID)
     }
 
   }
-
+  flushConfigBuffer();
 }
 
 /*

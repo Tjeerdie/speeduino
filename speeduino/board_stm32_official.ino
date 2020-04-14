@@ -5,11 +5,66 @@
 #include "idle.h"
 #include "scheduler.h"
 #include "HardwareTimer.h"
-#ifdef USE_SPI_EEPROM
-  //We need to include and make a instance of the SPI flash EEPROM emulation if flag is set.
-  #include "src/SPIAsEEPROM/SPIAsEEPROM.h"
-  SPIAsEEPROM EEPROM;
-#endif
+#include "stm32_eeprom.h"
+#include EEPROM_LIB_H
+
+  byte readConfigByte(uint16_t address){
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)
+      return EEPROM.read(address);
+    #else
+      return eeprom_buffered_read_byte(address);
+    #endif
+  }
+  int8_t writeConfigByte(uint16_t address, uint8_t value){
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)
+      EEPROM.write(address, value);
+    #else
+      eeprom_buffered_write_byte(address, value);
+    #endif
+    return 0;
+  }
+  int8_t updateConfigByte(uint16_t address, uint8_t value){
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)
+      EEPROM.update(address, value);
+    #else
+      if(eeprom_buffered_read_byte(address) != value){
+        eeprom_buffered_write_byte(address, value);
+      }
+    #endif
+
+    return 0;
+  }
+  int8_t flushConfigBuffer(){
+    //some how speeduino does access the flash at some position setting al kinds of error flags. 
+    //Reset these for trying to commit to flash if not cleared write to flash will fail. 
+    //The problem is unitilized pointers automaticly point to flash adresses causing errors
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)
+    #else
+      eeprom_buffer_flush();
+    #endif   
+    return 0;
+  }
+
+  int8_t fillConfigBuffer(){
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)
+    #else
+      eeprom_buffer_fill();
+    #endif  
+    return 0;
+  } 
+
+  int8_t clearConfig(){
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)
+      for (uint16_t i = 0; i < EEPROM.length(); i++)
+    #else
+      for (uint16_t i = 0; i < FLASH_PAGE_SIZE; i++)
+    #endif 
+      {
+        writeConfigByte(i, 0xFF);
+      }
+      flushConfigBuffer();
+    return 0;
+  }
 
   void initBoard()
   {
@@ -17,10 +72,10 @@
     ***********************************************************************************************************
     * General
     */
-    #ifndef FLASH_LENGTH
-      #define FLASH_LENGTH 8192
-    #endif
-    delay(10);
+    // #ifndef FLASH_LENGTH
+    //   #define FLASH_LENGTH 8192
+    // #endif
+    // delay(10);
     /*
     ***********************************************************************************************************
     * Idle

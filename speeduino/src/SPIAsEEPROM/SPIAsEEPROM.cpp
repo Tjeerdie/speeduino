@@ -233,6 +233,10 @@ uint16_t SPIAsEEPROM::count(uint8_t buf[FLASH_PAGESIZE/BITS_PER_BYTE]){
     return count;
 }
 
-//SPIAsEEPROM EEPROM;
+int8_t SPIAsEEPROM::length(){
+  return (FLASHSIZEUSED/SECTORSIZE)*BYTESPERSECTOR;
+}
+
+SPIAsEEPROM EEPROM;
 
 #endif

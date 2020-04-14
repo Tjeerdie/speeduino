@@ -120,6 +120,16 @@
   static inline void boostInterrupt();
   static inline void vvtInterrupt();
 
+
+/*
+***********************************************************************************************************
+* Storage solution
+*/
+  static inline byte readConfigByte(uint16_t address);
+  static inline int8_t writeConfigByte(uint16_t address, uint8_t value);
+  static inline int8_t updateConfigByte(uint16_t address, uint8_t value);
+  static inline int8_t flushConfigBuffer();
+  static inline int8_t fillConfigBuffer();
 /*
 ***********************************************************************************************************
 * Idle
