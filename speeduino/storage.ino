@@ -32,7 +32,7 @@ void writeAllConfig()
 Takes the current configuration (config pages and maps)
 and writes them to EEPROM as per the layout defined in storage.h
 */
-void writeConfig(byte tableNum, byte BufferFlush = FLUSHBUFFER)
+void writeConfig(byte tableNum, byte BufferFlush)
 {
   /*
   We only ever write to the EEPROM where the new value is different from the currently stored byte
