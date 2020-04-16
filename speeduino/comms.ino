@@ -107,11 +107,11 @@ void command()
       break;
 
     case 'f': // Format flash function for testing/debugging
-      #if defined(USE_SPI_EEPROM)
-        Serial.println("Formatting Flash EEPROM"); //Formatting takes a couple of seconds
-        EEPROM.clear();
-        Serial.println("Formatted Flash EEPROM");
-      #endif
+      // #if defined(USE_SPI_EEPROM)
+      //   Serial.println("Formatting Flash EEPROM"); //Formatting takes a couple of seconds
+      //   EEPROM.clear();
+      //   Serial.println("Formatted Flash EEPROM");
+      // #endif
       // Serial.print("FLASH_FLAG_OPERR: ");
       // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_OPERR) != RESET);
       // Serial.print("FLASH_FLAG_WRPERR: ");
@@ -136,7 +136,13 @@ void command()
       // Serial.println(__HAL_FLASH_GET_FLAG(FLASH_FLAG_PGSERR) != RESET);
       // Serial.print("Time ms: ");
       // Serial.println(millis(), DEC);
-      clearConfig();
+      // clearConfig();
+      // Serial.println("micros: ");
+      // Serial.println(micros());
+      // Serial.println("IGN1_COMPARE");
+      // Serial.println(IGN1_COMPARE);
+      // Serial.println("IGN1_COUNTER");
+      // Serial.println(IGN1_COUNTER);
       
       //flushConfigBuffer();
       
