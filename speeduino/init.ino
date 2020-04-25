@@ -2017,8 +2017,8 @@ void setPinMapping(byte boardID)
         pinDNU[18] = PA3; //TX2
         // = PA4; 
         // = PA5;   //ADC12
-        pinFuelPump = PA6; //ADC12 LED_BUILTIN_1
-        /* = PA7; */ //ADC12 LED_BUILTIN_2
+        // = PA6; //ADC12 LED_BUILTIN_1
+        pinFuelPump = PA7; //ADC12 LED_BUILTIN_2
         pinCoil3 = PA8;
         pinDNU[0] = PA9; //TXD1 //Bluetooth RX
         pinDNU[1] = PA10; //RXD1 //Bluetooth TX
