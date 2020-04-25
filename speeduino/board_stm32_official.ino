@@ -126,11 +126,7 @@
     * Schedules
     */
     Timer1.setOverflow(0xFFFF, TICK_FORMAT);
-    #if defined(STM32F4)
-    Timer2.setOverflow(0xFFFFFFFF, TICK_FORMAT); //32bit timer
-    #else
-    Timer2.setOverflow(0xFFFF, TICK_FORMAT);
-    #endif
+    Timer2.setOverflow(0xFFFF, TICK_FORMAT); //32bit timer
     Timer3.setOverflow(0xFFFF, TICK_FORMAT);
 
     Timer1.setPrescaleFactor(((Timer1.getTimerClkFreq()/1000000) * 4)-1);   //4us resolution

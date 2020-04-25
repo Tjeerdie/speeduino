@@ -120,12 +120,12 @@ struct Schedule {
   volatile byte schedulesSet; //A counter of how many times the schedule has been set
   void (*StartCallback)(); //Start Callback function for schedule
   void (*EndCallback)(); //Start Callback function for schedule
-  volatile unsigned long startTime; /**< The system time (in uS) that the schedule started, used by the overdwell protection in timers.ino */
-  volatile COMPARE_TYPE startCompare; //The counter value of the timer when this will start
-  volatile COMPARE_TYPE endCompare;
+  volatile unsigned long startTime=0; /**< The system time (in uS) that the schedule started, used by the overdwell protection in timers.ino */
+  volatile COMPARE_TYPE startCompare=0; //The counter value of the timer when this will start
+  volatile COMPARE_TYPE endCompare=0;
 
-  unsigned int nextStartCompare;
-  unsigned int nextEndCompare;
+  unsigned int nextStartCompare=0;
+  unsigned int nextEndCompare=0;
   volatile bool hasNextSchedule = false;
   volatile bool endScheduleSetByDecoder = false;
 };

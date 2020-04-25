@@ -2007,7 +2007,6 @@ void setPinMapping(byte boardID)
     case 60:
        //Pin definitions for experimental board Tjeerd 
         //Black F407VE wiki.stm32duino.com/index.php?title=STM32F407
-
         //******************************************
         //******** PORTA CONNECTIONS *************** 
         //******************************************
