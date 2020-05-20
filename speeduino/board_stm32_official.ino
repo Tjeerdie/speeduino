@@ -1,4 +1,5 @@
 #if defined(CORE_STM32_OFFICIAL)
+#define LED_BUILTIN PA7
 #include "board_stm32_official.h"
 #include "globals.h"
 #include "auxiliaries.h"
@@ -218,6 +219,7 @@
   ***********************************************************************************************************
   * Interrupt callback functions
   */
+#if ((STM32_CORE_VERSION_MINOR<=8) & (STM32_CORE_VERSION_MAJOR==1)) 
   void oneMSInterval(HardwareTimer*){oneMSInterval();}
   void boostInterrupt(HardwareTimer*){boostInterrupt();}
   void fuelSchedule1Interrupt(HardwareTimer*){fuelSchedule1Interrupt();}
@@ -255,4 +257,5 @@
   void ignitionSchedule8Interrupt(HardwareTimer*){ignitionSchedule8Interrupt();}
   #endif
 
+#endif //End core<1.8
 #endif
