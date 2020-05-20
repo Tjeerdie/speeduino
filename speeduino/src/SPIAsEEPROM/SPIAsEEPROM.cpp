@@ -411,7 +411,7 @@ int8_t InternalSTM32F4_EEPROM_Class::eraseFlashSector(uint32_t address, uint32_t
   if ((realAddress>=0x08080000UL)&(realAddress<=0x0809FFFFUL)){_Sector = 8;}
   if ((realAddress>=0x080A0000UL)&(realAddress<=0x080BFFFFUL)){_Sector = 9;}
   if ((realAddress>=0x080C0000UL)&(realAddress<=0x080DFFFFUL)){_Sector = 10;}
-  if ((realAddress>=0x080E0000UL)&(realAddress<=0x080FFFFFUL)){_Sector = 11;
+  if ((realAddress>=0x080E0000UL)&(realAddress<=0x080FFFFFUL)){_Sector = 11;}
 
 #elif defined(STM32F7xx)
 
