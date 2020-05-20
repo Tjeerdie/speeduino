@@ -501,7 +501,6 @@ else /* (Address < FLASH_END_ADDR) && (Address >= ADDR_FLASH_SECTOR_23) */
 
   HAL_FLASH_Unlock();
   if (HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError) == HAL_OK){EraseSucceed=true;}
-
   HAL_FLASH_Lock();
   return EraseSucceed;
 }
