@@ -11,8 +11,11 @@
 #include "stm32f3xx_ll_tim.h"
 #elif defined(STM32F4)
 #include "stm32f4xx_ll_tim.h"
+#elif defined(STM32F7)
+#include "STM32F7xx_ll_tim.h"
+#include "stm32f7xx_hal.h"
 #else /*Default should be STM32F4*/
-#include "stm32f4xx_ll_tim.h"
+#include "STM32F4xx_ll_tim.h"
 #endif
 /*
 ***********************************************************************************************************
@@ -37,7 +40,7 @@
 
 #if defined(FRAM_AS_EEPROM)
   #include <Fram.h>
-  #if defined(ARDUINO_BLACK_F407VE)
+  #if defined(ARDUINO_BLACK_F407VE) || (STM32F7xx)
   FramClass EEPROM(PB5, PB4, PB3, PB0); /*(mosi, miso, sclk, ssel, clockspeed) 31/01/2020*/
   #else
   FramClass EEPROM(PB15, PB12, PB13, PB12); //Blue/Black Pills

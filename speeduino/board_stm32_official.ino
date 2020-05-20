@@ -16,7 +16,7 @@
     // #endif
   }
   int8_t writeConfigByte(uint16_t address, uint8_t value){
-    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) || defined(STM32F407xx)
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) ||  defined(STM32F407xx) || defined(STM32F7xx)
       EEPROM.write(address, value);
     #else
       eeprom_buffered_write_byte(address, value);
@@ -24,7 +24,7 @@
     return 0;
   }
   int8_t updateConfigByte(uint16_t address, uint8_t value){
-    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)|| defined(STM32F407xx)
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM)|| defined(STM32F407xx) || defined(STM32F7xx)
       EEPROM.update(address, value);
     #else
       if(eeprom_buffered_read_byte(address) != value){
@@ -38,7 +38,7 @@
     // some how speeduino does access the flash at some position setting al kinds of error flags. 
     // Reset these for trying to commit to flash if not cleared write to flash will fail. 
     // The problem is uninitialized pointers automaticly point to flash adresses causing errors
-    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) || defined(STM32F407xx)
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) || defined (STM32F407xx) ||defined(STM32F7xx)
     #else
       eeprom_buffer_flush();
     #endif   
@@ -46,7 +46,7 @@
   }
 
   int8_t fillConfigBuffer(){
-    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) || defined(STM32F407xx)
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) || defined(STM32F407xx) || defined(STM32F7xx)
     #else
       eeprom_buffer_fill();
     #endif  
@@ -54,7 +54,7 @@
   } 
 
   int8_t clearConfig(){
-    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) || defined(STM32F407xx)
+    #if defined(USE_SPI_EEPROM) || defined(FRAM_AS_EEPROM) || defined(STM32F407xx) || defined(STM32F7xx)
       for (uint16_t i = 0; i < EEPROM.length(); i++)
     #else
       for (uint16_t i = 0; i < FLASH_PAGE_SIZE; i++)
@@ -151,7 +151,7 @@
     Timer3.attachInterrupt(3, fuelSchedule3Interrupt);
     Timer3.attachInterrupt(4, fuelSchedule4Interrupt);
     #if (INJ_CHANNELS >= 5)
-    #if defined(STM32F4)
+    #if defined(STM32F4) || defined(stm32F7)
     Timer5.setOverflow(0xFFFFFFFF, TICK_FORMAT); //32bit timer
     #else
     Timer5.setOverflow(0xFFFF, TICK_FORMAT);
