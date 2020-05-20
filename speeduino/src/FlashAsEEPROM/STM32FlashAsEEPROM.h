@@ -30,7 +30,11 @@
 
 #if defined(USE_STM32FLASH_EEPROM)
 #define FLASH_SIZE_USED                   131072 //must be a multiple of sectorsize //(131072/1024)*63 = 8064 bytes of EEPROM
+if defined(STM32F7xx)
+#define FLASH_SECTOR_BASE_ADDRESS         0x08180000 //This is sector 7 and last sector of the STM32F407VE6 internal flash this one is 128kbyte 
+#else
 #define FLASH_SECTOR_BASE_ADDRESS         0x08060000 //This is sector 7 and last sector of the STM32F407VE6 internal flash this one is 128kbyte 
+#endif
 #define EMULATION_SECTOR_SIZE             1024 //Size for each sector 
 #define EMULATION_WEAR_FACTOR             14 //14 bytes for storage, 2 bytes=16 bits to store wich of the 14 bytes holds the valid data 
 #define EMULATION_MAGIC_NUMBER_SIZE       16 //magic number size in bytes. Magic number is stored at the start of each Sector
@@ -45,9 +49,14 @@
 
 #include "Arduino.h"
 #include <stdint.h>
-#include "stm32f4xx_hal.h"
 #include "stm32_eeprom.h"
+if defined(STM32F7xx)
+#include "stm32f7xx_hal.h"
+#include "stm32f7xx_hal_flash.h"
+#else
+#include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_flash.h"
+#endif
 
 class STM32FlashAsEEPROM {
 
