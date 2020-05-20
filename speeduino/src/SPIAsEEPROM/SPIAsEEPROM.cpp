@@ -348,7 +348,7 @@ int8_t SPI_EEPROM_Class::eraseFlashSector(uint32_t address, uint32_t length){
 //   return EraseSucceed;
 // }
 
-#elif defined(STM32F407xx || STM32F7xx)
+#elif defined(STM32F407xx) || (STM32F7xx)
 
 InternalSTM32F4_EEPROM_Class::InternalSTM32F4_EEPROM_Class(EEPROM_Emulation_Config config) : FLASH_EEPROM_BaseClass(config)
 {

@@ -147,6 +147,7 @@
   #define EEPROM_BYTES_PER_SECTOR     4095UL //(FLASH_SECTOR_SIZE/EEPROM_BYTES_PER_SECTOR+1) Must be integer number and aligned with page size of flash used.
   #define EEPROM_FLASH_BASEADRESS     0x08180000UL //address to start from can be zero or any other place in flash. make sure EEPROM_FLASH_BASEADRESS+FLASH_SIZE_USED is not over end of flash
 #endif
+#endif
 
 #define MAGICNUMBER1                0xC0
 #define MAGICNUMBER2                0xFF
