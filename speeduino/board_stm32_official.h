@@ -12,7 +12,7 @@
 #elif defined(STM32F4)
 #include "stm32f4xx_ll_tim.h"
 #elif defined(STM32F7)
-#include "STM32F7xx_ll_tim.h"
+#include "stm32f7xx_ll_tim.h"
 #include "stm32f7xx_hal.h"
 #else /*Default should be STM32F4*/
 #include "STM32F4xx_ll_tim.h"
@@ -35,7 +35,7 @@
 #endif
 
 #ifndef LED_BUILTIN
-  #define LED_BUILTIN PA7
+#define LED_BUILTIN PA7
 #endif
 
 #if defined(FRAM_AS_EEPROM)
