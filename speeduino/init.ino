@@ -219,7 +219,7 @@ void initialiseAll()
     o2CalibrationTable.xSize = 32;
     o2CalibrationTable.values = o2Calibration_values;
     o2CalibrationTable.axisX = o2Calibration_bins;
-
+    
     //Setup the calibration tables
     loadCalibration();
 
@@ -367,7 +367,7 @@ void initialiseAll()
     timer5_overflow_count = 0;
     toothHistoryIndex = 0;
     toothHistorySerialIndex = 0;
-    
+ 
     noInterrupts();
     initialiseTriggers();
 
@@ -1191,36 +1191,36 @@ void setPinMapping(byte boardID)
     #endif
     //New FRAM chips reads 0
     #if defined(CORE_STM32)
-      //https://github.com/stm32duino/Arduino_Core_STM32/blob/master/variants/Generic_F411Cx/variant.h#L28
-      //pins PA12, PA11 are used for USB or CAN couldn't be used for GPIO
-      //pins PB12, PB13, PB14 and PB15 are used to SPI FLASH
-      pinInjector1 = PB7; //Output pin injector 1 is on
-      pinInjector2 = PB6; //Output pin injector 2 is on
-      pinInjector3 = PB5; //Output pin injector 3 is on
-      pinInjector4 = PB4; //Output pin injector 4 is on
-      pinCoil1 = PB9; //Pin for coil 1
-      pinCoil2 = PB8; //Pin for coil 2
-      pinCoil3 = PB3; //Pin for coil 3
-      pinCoil4 = PA15; //Pin for coil 4
-      pinTPS = A2;//TPS input pin
-      pinMAP = A3; //MAP sensor pin
-      pinIAT = A0; //IAT sensor pin
-      pinCLT = A1; //CLS sensor pin
-      pinO2 = A8; //O2 Sensor pin
-      pinBat = A4; //Battery reference voltage pin
-      pinBaro = pinMAP;
-      pinIdle1 = PA5; //Single wire idle control
-      pinBoost = PA6; //Boost control
-      //pinVVT_1 = 4; //Default VVT output
-      //pinStepperDir = PC15; //Direction pin  for DRV8825 driver
-      //pinStepperStep = PC14; //Step pin for DRV8825 driver
-      //pinStepperEnable = PC13; //Enable pin for DRV8825
-      pinFuelPump = PB10; //Fuel pump output
-      pinTachOut = PC13; //Tacho output pin
-      //external interrupt enabled pins
-      //pinFlex = PB2; // Flex sensor (Must be external interrupt enabled)
-      pinTrigger = PB1; //The CAS pin
-      pinTrigger2 = PB10; //The Cam Sensor pin
+        //https://github.com/stm32duino/Arduino_Core_STM32/blob/master/variants/Generic_F411Cx/variant.h#L28
+        //pins PA12, PA11 are used for USB or CAN couldn't be used for GPIO
+        //pins PB12, PB13, PB14 and PB15 are used to SPI FLASH
+        pinInjector1 = PB7; //Output pin injector 1 is on
+        pinInjector2 = PB6; //Output pin injector 2 is on
+        pinInjector3 = PB5; //Output pin injector 3 is on
+        pinInjector4 = PB4; //Output pin injector 4 is on
+        pinCoil1 = PB9; //Pin for coil 1
+        pinCoil2 = PB8; //Pin for coil 2
+        pinCoil3 = PB3; //Pin for coil 3
+        pinCoil4 = PA15; //Pin for coil 4
+        pinTPS = A2;//TPS input pin
+        pinMAP = A3; //MAP sensor pin
+        pinIAT = A0; //IAT sensor pin
+        pinCLT = A1; //CLS sensor pin
+        pinO2 = A8; //O2 Sensor pin
+        pinBat = A4; //Battery reference voltage pin
+        pinBaro = pinMAP;
+        pinIdle1 = PA5; //Single wire idle control
+        pinBoost = PA6; //Boost control
+        //pinVVT_1 = 4; //Default VVT output
+        //pinStepperDir = PC15; //Direction pin  for DRV8825 driver
+        //pinStepperStep = PC14; //Step pin for DRV8825 driver
+        //pinStepperEnable = PC13; //Enable pin for DRV8825
+        pinFuelPump = PB10; //Fuel pump output
+        pinTachOut = PC13; //Tacho output pin
+        //external interrupt enabled pins
+        //pinFlex = PB2; // Flex sensor (Must be external interrupt enabled)
+        pinTrigger = PB1; //The CAS pin
+        pinTrigger2 = PB10; //The Cam Sensor pin
     #endif
       break;
     case 1:
@@ -2447,18 +2447,34 @@ void setPinMapping(byte boardID)
     pinMode(pinCoil2, OUTPUT);
     pinMode(pinCoil3, OUTPUT);
     pinMode(pinCoil4, OUTPUT);
+    #if (IGN_CHANNELS >= 5)
     pinMode(pinCoil5, OUTPUT);
+    #endif
+    #if (IGN_CHANNELS >= 6)
     pinMode(pinCoil6, OUTPUT);
+    #endif
+    #if (IGN_CHANNELS >= 7)
     pinMode(pinCoil7, OUTPUT);
+    #endif
+    #if (IGN_CHANNELS >= 8)
     pinMode(pinCoil8, OUTPUT);
+    #endif
     pinMode(pinInjector1, OUTPUT);
     pinMode(pinInjector2, OUTPUT);
     pinMode(pinInjector3, OUTPUT);
     pinMode(pinInjector4, OUTPUT);
+    #if (INJ_CHANNELS >= 5)
     pinMode(pinInjector5, OUTPUT);
+    #endif
+    #if (INJ_CHANNELS >= 6)
     pinMode(pinInjector6, OUTPUT);
+    #endif
+    #if (INJ_CHANNELS >= 7)
     pinMode(pinInjector7, OUTPUT);
+    #endif
+    #if (INJ_CHANNELS >= 8)
     pinMode(pinInjector8, OUTPUT);
+    #endif
 
     inj1_pin_port = portOutputRegister(digitalPinToPort(pinInjector1));
     inj1_pin_mask = digitalPinToBitMask(pinInjector1);
