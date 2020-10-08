@@ -209,7 +209,7 @@ void loop()
 
     //***Perform sensor reads***
     //-----------------------------------------------------------------------------------------------------
-     readMAP();
+    readMAP();
     
     if (BIT_CHECK(LOOP_TIMER, BIT_TIMER_15HZ)) //Every 32 loops
     {
@@ -225,12 +225,8 @@ void loop()
 
       //Check for launching/flat shift (clutch) can be done around here too
       previousClutchTrigger = clutchTrigger;
-      //Only check for pinLaunch if any function using it is enabled. Else pins might break starting STM32board
-      if(configPage6.flatSEnable || configPage6.launchEnabled){
-        if(configPage6.launchHiLo > 0) { clutchTrigger = digitalRead(pinLaunch); }
-        else { clutchTrigger = !digitalRead(pinLaunch); }
-      }
-
+      if(configPage6.launchHiLo > 0) { clutchTrigger = digitalRead(pinLaunch); }
+      else { clutchTrigger = !digitalRead(pinLaunch); }
 
       if(previousClutchTrigger != clutchTrigger) { currentStatus.clutchEngagedRPM = currentStatus.RPM; }
 
