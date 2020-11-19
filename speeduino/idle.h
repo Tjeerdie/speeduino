@@ -11,6 +11,7 @@
 #define IAC_ALGORITHM_PWM_CL  3
 #define IAC_ALGORITHM_STEP_OL 4
 #define IAC_ALGORITHM_STEP_CL 5
+#define IAC_ALGORITHM_PWM_OLCL  6 //Openloop plus closedloop IAC control
 
 #define STEPPER_FORWARD 0
 #define STEPPER_BACKWARD 1
@@ -42,6 +43,9 @@ unsigned int iacStepTime_uS;
 unsigned int iacCoolTime_uS;
 unsigned int completedHomeSteps;
 
+uint16_t lastRPM; //Must be global because it needs to be remebered between calls
+int32_t PID_iInput; //Must be global because it needs to be remembered between calls this is the integral buffer
+
 volatile PORT_TYPE *idle_pin_port;
 volatile PINMASK_TYPE idle_pin_mask;
 volatile PORT_TYPE *idle2_pin_port;
@@ -51,6 +55,7 @@ volatile bool idle_pwm_state;
 unsigned int idle_pwm_max_count; //Used for variable PWM frequency
 volatile unsigned int idle_pwm_cur_value;
 long idle_pid_target_value;
+long FeedForwardTerm;
 unsigned long idle_pwm_target_value;
 long idle_cl_target_rpm;
 byte idleCounter; //Used for tracking the number of calls to the idle control function
