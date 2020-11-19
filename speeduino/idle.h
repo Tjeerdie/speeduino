@@ -43,9 +43,6 @@ unsigned int iacStepTime_uS;
 unsigned int iacCoolTime_uS;
 unsigned int completedHomeSteps;
 
-uint16_t lastRPM; //Must be global because it needs to be remebered between calls
-int32_t PID_iInput; //Must be global because it needs to be remembered between calls this is the integral buffer
-
 volatile PORT_TYPE *idle_pin_port;
 volatile PINMASK_TYPE idle_pin_mask;
 volatile PORT_TYPE *idle2_pin_port;
