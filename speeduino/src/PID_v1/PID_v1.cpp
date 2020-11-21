@@ -235,7 +235,7 @@ integerPID::integerPID(long* Input, long* Output, long* Setpoint,
  *   pid Output needs to be computed.  returns true when the output is computed,
  *   false when nothing has been done.
  **********************************************************************************/
-bool integerPID::Compute(bool pOnE, long FeedForwardTerm = 0)
+bool integerPID::Compute(bool pOnE, long FeedForwardTerm)
 {
    if(!inAuto) return false;
    unsigned long now = millis();
