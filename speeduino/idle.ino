@@ -287,33 +287,32 @@ void idleControl()
           idle_pid_target_value = idle_pwm_target_value << 2; //Resolution increased
           idlePID.Initialize(); //Update output to smooth transition
         }
-        else if(currentStatus.TPS < configPage2.iacTPSlimit){
+        else  
         {
           currentStatus.CLIdleTarget = (byte)table2D_getValue(&iacClosedLoopTable, currentStatus.coolant + CALIBRATION_TEMPERATURE_OFFSET); //All temps are offset by 40 degrees
           idle_cl_target_rpm = (uint16_t)currentStatus.CLIdleTarget * 10; //Multiply the byte target value back out by 10
           if( (idleCounter & 31) == 1) { idlePID.SetTunings(configPage6.idleKP, configPage6.idleKI, configPage6.idleKD); } //This only needs to be run very infrequently, once every 32 calls to idleControl(). This is approx. once per second
-
-          PID_computed = idlePID.Compute(true, FeedForwardTerm);
-
-          if(PID_computed == true)
-          {
-            idle_pwm_target_value = idle_pid_target_value>>2; //increased resolution
-            if( idle_pwm_target_value == 0 )
-            { 
-              disableIdle(); 
-              BIT_CLEAR(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag off
-              break; 
-            }
-            BIT_SET(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag on
-            currentStatus.idleLoad = ((unsigned long)(idle_pwm_target_value * 100UL) / idle_pwm_max_count);
-            if(currentStatus.idleUpActive == true) { currentStatus.idleDuty += configPage2.idleUpAdder; } //Add Idle Up amount if active
-
+          if((currentStatus.RPM - idle_cl_target_rpm > configPage2.iacTPSlimit*10) || (currentStatus.TPS > 5)){
+            idlePID.ResetIntegeral();
           }
-          idleCounter++;
-        }}else{
-          //reset integral term to zero, 
-          //idlePID.
-        }
+            PID_computed = idlePID.Compute(true, FeedForwardTerm);
+
+            if(PID_computed == true)
+            {
+              idle_pwm_target_value = idle_pid_target_value>>2; //increased resolution
+              if( idle_pwm_target_value == 0 )
+              { 
+                disableIdle(); 
+                BIT_CLEAR(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag off
+                break; 
+              }
+              BIT_SET(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag on
+              currentStatus.idleLoad = ((unsigned long)(idle_pwm_target_value * 100UL) / idle_pwm_max_count);
+              if(currentStatus.idleUpActive == true) { currentStatus.idleDuty += configPage2.idleUpAdder; } //Add Idle Up amount if active
+
+            }
+            idleCounter++;
+          }
           
       break;
 

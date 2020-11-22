@@ -127,6 +127,7 @@ class integerPID
 	int GetMode();						  //  inside the PID.
 	int GetDirection();					  //
   void Initialize();
+  void ResetIntegeral();
 
   private:
 

@@ -524,7 +524,7 @@ void integerPID::SetControllerDirection(byte Direction)
  ******************************************************************************/
 int integerPID::GetMode(){ return  inAuto ? AUTOMATIC : MANUAL;}
 int integerPID::GetDirection(){ return controllerDirection;}
-
+void integerPID::ResetIntegeral() { outputSum=0;}
 //************************************************************************************************************************
 #define limitMultiplier 100 //How much outMin and OutMax must be multiplied by to get them in the same scale as the output
 
