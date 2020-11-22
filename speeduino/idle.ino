@@ -272,7 +272,7 @@ void idleControl()
       break;
 
     
-    case IAC_ALGORITHM_PWM_OLCL: //case 6 is PWM closed loop plus Open Loop table feedforard term
+    case IAC_ALGORITHM_PWM_OLCL: //case 6 is PWM closed loop plus Open Loop table feedforard term note the absance of the break, this is intensional 
       //Read the OL table as feedforward term
       FeedForwardTerm = percentage(table2D_getValue(&iacPWMTable, currentStatus.coolant + CALIBRATION_TEMPERATURE_OFFSET), idle_pwm_max_count<<2); //All temps are offset by 40 degrees
     
@@ -291,28 +291,28 @@ void idleControl()
         {
           currentStatus.CLIdleTarget = (byte)table2D_getValue(&iacClosedLoopTable, currentStatus.coolant + CALIBRATION_TEMPERATURE_OFFSET); //All temps are offset by 40 degrees
           idle_cl_target_rpm = (uint16_t)currentStatus.CLIdleTarget * 10; //Multiply the byte target value back out by 10
-          if( (idleCounter & 31) == 1) { idlePID.SetTunings(configPage6.idleKP, configPage6.idleKI, configPage6.idleKD); } //This only needs to be run very infrequently, once every 32 calls to idleControl(). This is approx. once per second
-          if((currentStatus.RPM - idle_cl_target_rpm > configPage2.iacTPSlimit*10) || (currentStatus.TPS > 5)){
+          if( (idleCounter & 31) == 1) { idlePID.SetTunings(configPage6.idleKP, configPage6.idleKI, configPage6.idleKD); } //This only needs to be run very infrequently, once every 32 calls to idleControl(). This is approx. once per 9 seconds
+          if((currentStatus.RPM - idle_cl_target_rpm > configPage2.iacRPMlimitHysteresis*10) || (currentStatus.TPS > configPage2.iacTPSlimit)){ //reset integeral to zero when TPS is bigger than set value in TS (opening throttle so not idle anymore). OR when RPM higher than Idle Target + RPM Histeresis (comming back from high rpm with throttle closed) 
             idlePID.ResetIntegeral();
           }
-            PID_computed = idlePID.Compute(true, FeedForwardTerm);
+          PID_computed = idlePID.Compute(true, FeedForwardTerm);
 
-            if(PID_computed == true)
-            {
-              idle_pwm_target_value = idle_pid_target_value>>2; //increased resolution
-              if( idle_pwm_target_value == 0 )
-              { 
-                disableIdle(); 
-                BIT_CLEAR(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag off
-                break; 
-              }
-              BIT_SET(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag on
-              currentStatus.idleLoad = ((unsigned long)(idle_pwm_target_value * 100UL) / idle_pwm_max_count);
-              if(currentStatus.idleUpActive == true) { currentStatus.idleDuty += configPage2.idleUpAdder; } //Add Idle Up amount if active
-
+          if(PID_computed == true)
+          {
+            idle_pwm_target_value = idle_pid_target_value>>2; //increased resolution
+            if( idle_pwm_target_value == 0 )
+            { 
+              disableIdle(); 
+              BIT_CLEAR(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag off
+              break; 
             }
-            idleCounter++;
+            BIT_SET(currentStatus.spark, BIT_SPARK_IDLE); //Turn the idle control flag on
+            currentStatus.idleLoad = ((unsigned long)(idle_pwm_target_value * 100UL) / idle_pwm_max_count);
+            if(currentStatus.idleUpActive == true) { currentStatus.idleDuty += configPage2.idleUpAdder; } //Add Idle Up amount if active
+
           }
+          idleCounter++;
+        }
           
       break;
 

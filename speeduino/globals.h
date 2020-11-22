@@ -774,7 +774,8 @@ struct config2 {
   uint16_t vssRatio5;
   uint16_t vssRatio6;
   byte iacTPSlimit;
-  byte unused2_95[8];
+  byte iacRPMlimitHysteresis;
+  byte unused2_95[7];
   byte primingDelay;
 
 #if defined(CORE_AVR)
