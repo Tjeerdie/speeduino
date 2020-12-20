@@ -42,6 +42,9 @@ bool serialInProgress = false;
 bool toothLogSendInProgress = false;
 bool compositeLogSendInProgress = false;
 
+//Need a global variable to stitch the 2 bytes for the year of the RTC 
+uint16_t RTC_Year=2000;
+
 const char pageTitles[] PROGMEM //This is being stored in the avr flash instead of SRAM which there is not very much of
   {
    "\nVE Map\0"//This is an alternative to using a 2D array which would waste space because of the different lengths of the strings

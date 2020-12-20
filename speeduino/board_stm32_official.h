@@ -4,6 +4,7 @@
 #if defined(STM32_CORE_VERSION_MAJOR)
 #include <HardwareTimer.h>
 #include <HardwareSerial.h>
+#include "STM32RTC.h"
 
 #if defined(STM32F1)
 #include "stm32f1xx_ll_tim.h"

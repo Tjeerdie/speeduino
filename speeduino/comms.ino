@@ -275,6 +275,15 @@ void command()
           length = word(Serial.read(), tmp);
           sendValues(offset, length, cmd, 0);
         }
+        else if(cmd == 0x07) //ms3 style read rtc
+        {
+          byte tmp;
+          tmp = Serial.read();
+          offset = word(tmp, Serial.read());
+          tmp = Serial.read();
+          length = word(tmp, Serial.read());
+          sendValues(offset, length, cmd, 0);
+        } 
         else
         {
           //No other r/ commands should be called
@@ -400,6 +409,13 @@ void command()
           length2 = Serial.read(); // Length to be written (Should always be 1)
           chunkSize = word(length2, length1);
 
+          //This is ugly hack for RTC. The set real time clock panel in TS is hard coded to follow the big endianess and comm style of ms3 (ini endianness settings are not followed). 
+          //Under normal conditions chuck size should not be more than 1024. if bigger than 1024 we assume ms3 style big endian RTC communication
+          if (chunkSize > 1024){
+            //change chuncksize and offset from big to little endian
+            chunkSize = (chunkSize>>8) | (chunkSize<<8);
+            valueOffset = (valueOffset>>8) | (valueOffset<<8);
+          }
           chunkPending = true;
           chunkComplete = 0;
         }
@@ -669,29 +685,44 @@ void sendValues(uint16_t offset, uint16_t packetLength, byte cmd, byte portNum)
   
   updateFullStatus();
   
-
-  for(byte x=0; x<packetLength; x++)
-  {
-    if (portNum == 0) { Serial.write(fullStatus[offset+x]); }
-    #if defined(CANSerial_AVAILABLE)
-      else if (portNum == 3){ CANSerial.write(fullStatus[offset+x]); }
-    #endif
-
-    //Check whether the tx buffer still has space
-    if(Serial.availableForWrite() < 1) 
-    { 
-      //tx buffer is full. Store the current state so it can be resumed later
-      inProgressOffset = offset + x + 1;
-      inProgressLength = packetLength - x - 1;
-      serialInProgress = true;
-      return;
-    }
+  if (offset<589){
+    for(byte x=0; x<packetLength; x++)
+    {
     
-  }
-  serialInProgress = false;
-  // Reset any flags that are being used to trigger page refreshes
-  BIT_CLEAR(currentStatus.status3, BIT_STATUS3_VSS_REFRESH);
+      if (portNum == 0) { Serial.write(fullStatus[offset+x]); }
+      #if defined(CANSerial_AVAILABLE)
+        else if (portNum == 3){ CANSerial.write(fullStatus[offset+x]); }
+      #endif
 
+      //Check whether the tx buffer still has space
+      if(Serial.availableForWrite() < 1) 
+      { 
+        //tx buffer is full. Store the current state so it can be resumed later
+        inProgressOffset = offset + x + 1;
+        inProgressLength = packetLength - x - 1;
+        serialInProgress = true;
+        return;
+      }
+      
+    }
+    serialInProgress = false;
+    // Reset any flags that are being used to trigger page refreshes
+    BIT_CLEAR(currentStatus.status3, BIT_STATUS3_VSS_REFRESH);
+    }
+
+    //rtc expects 8 bytes
+    else if (offset == 0x024D)
+    {
+      Serial.write(rtc.getSeconds());
+      Serial.write(rtc.getMinutes());
+      Serial.write(rtc.getHours());
+      Serial.write(rtc.getDay());
+      Serial.write(rtc.getMonth());
+      RTC_Year = rtc.getYear()+2000;
+      Serial.write((uint8_t)RTC_Year);
+      Serial.write((uint8_t)RTC_Year>>8);
+      Serial.write(0x54);
+    }
 }
 
 void sendValuesLegacy()
@@ -972,6 +1003,41 @@ void receiveValue(uint16_t valueOffset, byte newValue)
       {
         tempOffset = valueOffset - 232;
         stagingTable.axisY[(7 - tempOffset)] = int(newValue) * TABLE_LOAD_MULTIPLIER;
+      }
+
+      //Again ugly hack to get RTC working. This is the hardcoded location used in ms3 
+      else if (valueOffset > 638) //New value is RTC write, this is hardcoded by TS, no way to change this
+      {
+        switch (valueOffset)
+        {
+        #ifdef RTC_ENABLED
+        case 645: //Year
+          RTC_Year = (RTC_Year | newValue);
+          rtc.setYear(RTC_Year-2000);
+          break;
+        case 644: //Year first part
+          RTC_Year = newValue<<8;
+          break;
+        case 643: //Month
+          rtc.setMonth(newValue<<8);
+          break;
+        case 642: //Day
+          rtc.setDay(newValue);
+          break;
+        case 640: //hours
+          rtc.setHours(newValue);
+          break;
+        case 639: //minutes
+          rtc.setMinutes(newValue);
+          break;
+        case 638: //seconds
+          rtc.setSeconds(newValue);
+          break;
+        #endif
+
+        default:
+          break;
+        }
       }
       boostTable.cacheIsValid = false; //Invalid the tables cache to ensure a lookup of new values
       vvtTable.cacheIsValid = false; //Invalid the tables cache to ensure a lookup of new values

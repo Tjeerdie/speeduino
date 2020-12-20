@@ -6,6 +6,9 @@
 #include "scheduler.h"
 #include "HardwareTimer.h"
 
+/* Get the rtc object */
+STM32RTC& rtc = STM32RTC::getInstance();
+
   void initBoard()
   {
     /*
@@ -15,7 +18,15 @@
     #ifndef FLASH_LENGTH
       #define FLASH_LENGTH 8192
     #endif
-    delay(10);
+    delay(10); 
+    /*
+    ***********************************************************************************************************
+    * Real Time clock for datalogging/time stamping
+    */
+    rtc.setClockSource(STM32RTC::LSE_CLOCK); //Initialize external clock for RTC. That is the only clock running of VBAT
+    rtc.begin(); // initialize RTC 24H format
+    #define RTC_ENABLED
+
     /*
     ***********************************************************************************************************
     * Idle
