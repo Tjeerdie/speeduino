@@ -10,6 +10,7 @@
 #include "scheduledIO.h"
 #include "sensors.h"
 #include "storage.h"
+#include "SD_logger.h"
 #ifdef USE_MC33810
   #include "acc_mc33810.h"
 #endif
@@ -353,6 +354,18 @@ void TS_CommandButtonsHandler(int buttonCommand)
 
     case TS_CMD_STM32_BOOTLOADER: //
       jumpToBootloader();
+      break;
+    case TS_CMD_STM32_INITSD: //
+      SDinit();
+      break;
+    case TS_CMD_STM32_OPENFILE: //
+      SDopenLogFile();
+      break;
+    case TS_CMD_STM32_CLOSEFILE: //
+      SDcloseLogFile();
+      break;
+    case TS_CMD_STM32_WRITELOG: //
+      SDwriteLogEntry();
       break;
 
     default:

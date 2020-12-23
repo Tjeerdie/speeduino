@@ -221,8 +221,8 @@ extern uint16_t ignition8EndTooth;
 extern int16_t toothAngles[24]; //An array for storing fixed tooth angles. Currently sized at 24 for the GM 24X decoder, but may grow later if there are other decoders that use this style
 
 //Used for identifying long and short pulses on the 4G63 (And possibly other) trigger patterns
-#define LONG 0;
-#define SHORT 1;
+#define LONG_4G63 0
+#define SHORT_4G63 1
 
 #define CRANK_SPEED 0
 #define CAM_SPEED   1

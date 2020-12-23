@@ -4,7 +4,6 @@
 #if defined(STM32_CORE_VERSION_MAJOR)
 #include <HardwareTimer.h>
 #include <HardwareSerial.h>
-#include "STM32RTC.h"
 
 #if defined(STM32F1)
 #include "stm32f1xx_ll_tim.h"
@@ -315,6 +314,44 @@ STM32_CAN Can1 (_CAN2,ALT);
 
 static CAN_message_t outMsg;
 static CAN_message_t inMsg;
+#endif
+/*
+***********************************************************************************************************
+* SD card logging
+*/
+
+#ifdef SD_CARD_LOGGER_ENABLED
+  #define SD_CARD_LIB_H <STM32SD.h>
+  #define ENABLE_INTERNAL_RTC //STM32 has internal rtc
+  #define LOGGER_WRITE_BLOCK_SIZE 512
+  #endif
+  #define SDHEARDE_H 
+#endif
+
+/*
+***********************************************************************************************************
+* RTC init
+*/
+#ifdef ENABLE_INTERNAL_RTC
+  #include <STM32RTC.h>
+  STM32RTC& rtc = STM32RTC::getInstance();
+  extern "C" {uint32_t get_fattime (void);}
+  /*
+***********************************************************************************************************
+* SD card datalogging 
+*/
+#ifdef SD_CARD_LOGGER_ENABLED
+void dateTime(uint16_t* date, uint16_t* time) 
+{
+  // DateTime now = rtc.now();
+
+  // // return date using FAT_DATE macro to format fields
+  // *date = FAT_DATE(now.year(), now.month(), now.day());
+
+  // // return time using FAT_TIME macro to format fields
+  // *time = FAT_TIME(now.hour(), now.minute(), now.second());
+  Serial1.printf("Calleback to datTime called.\n");
+}
 #endif
 
 #endif //CORE_STM32

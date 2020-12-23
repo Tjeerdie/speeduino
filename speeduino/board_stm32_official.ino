@@ -6,8 +6,16 @@
 #include "scheduler.h"
 #include "HardwareTimer.h"
 
-/* Get the rtc object */
-STM32RTC& rtc = STM32RTC::getInstance();
+
+#ifdef ENABLE_INTERNAL_RTC
+//This function is called by the fatfs library to get the current time if a new file is created
+uint32_t get_fattime (void){
+  uint32_t time;
+  time = (((uint32_t)rtc.getYear() + 20)<< 25) | (((uint32_t)rtc.getMonth())<< 21) | (((uint32_t)rtc.getDay())<< 16) | (((uint32_t)rtc.getHours())<< 11) | (((uint32_t)rtc.getMinutes())<< 5) | (((uint32_t)rtc.getSeconds())>>1);
+  return time;
+}
+#endif
+
 
   void initBoard()
   {
@@ -23,9 +31,14 @@ STM32RTC& rtc = STM32RTC::getInstance();
     ***********************************************************************************************************
     * Real Time clock for datalogging/time stamping
     */
-    rtc.setClockSource(STM32RTC::LSE_CLOCK); //Initialize external clock for RTC. That is the only clock running of VBAT
-    rtc.begin(); // initialize RTC 24H format
-    #define RTC_ENABLED
+    #ifdef ENABLE_INTERNAL_RTC
+      /* Get the rtc object */
+      rtc.setClockSource(STM32RTC::LSE_CLOCK); //Initialize external clock for RTC. LSE_CLOCK is the only clock running of VBAT
+      rtc.begin(); // initialize RTC 24H format
+    #endif
+
+    /*
+
 
     /*
     ***********************************************************************************************************
@@ -239,4 +252,7 @@ STM32RTC& rtc = STM32RTC::getInstance();
   void ignitionSchedule8Interrupt(HardwareTimer*){ignitionSchedule8Interrupt();}
   #endif
   #endif //End core<=1.8
+
+
+
 #endif

@@ -106,7 +106,7 @@ void command()
           TS_CommandButtonsHandler(cmdCombined);
           cmdPending = false;
         }
-        else if( (cmdCombined >= TS_CMD_STM32_REBOOT) && (cmdCombined <= TS_CMD_STM32_BOOTLOADER) )
+        else if( (cmdCombined >= TS_CMD_STM32_REBOOT) && (cmdCombined <= TS_CMD_STM32_INITSD) )
         {
           //STM32 DFU mode button
           TS_CommandButtonsHandler(cmdCombined);
@@ -652,7 +652,7 @@ void updateFullStatus()
   fullStatus[113] = currentStatus.fuelTempCorrection; //Fuel temperature Correction (%)
   fullStatus[114] = currentStatus.advance1; //advance 1 (%)
   fullStatus[115] = currentStatus.advance2; //advance 2 (%)
-  fullStatus[116] = 0; //Currently unused
+  fullStatus[116] = currentStatus.sd_status; //Currently unused
 
   //Each new inclusion here need to be added on speeduino.ini@L78, only list first byte of an integer and second byte as "INVALID"
   //Every integer added here should have it's lowByte index added to fsIntIndex array on globals.ino@L116
@@ -710,19 +710,19 @@ void sendValues(uint16_t offset, uint16_t packetLength, byte cmd, byte portNum)
     BIT_CLEAR(currentStatus.status3, BIT_STATUS3_VSS_REFRESH);
     }
 
-    //rtc expects 8 bytes
-    else if (offset == 0x024D)
-    {
-      Serial.write(rtc.getSeconds());
-      Serial.write(rtc.getMinutes());
-      Serial.write(rtc.getHours());
-      Serial.write(rtc.getDay());
-      Serial.write(rtc.getMonth());
-      RTC_Year = rtc.getYear()+2000;
-      Serial.write((uint8_t)RTC_Year);
-      Serial.write((uint8_t)RTC_Year>>8);
-      Serial.write(0x54);
-    }
+    //rtc in TS expects 8 bytes, no idea how these are arranged 
+  else if (offset == 0x024D)
+  {
+    Serial.write(rtc.getSeconds());
+    Serial.write(rtc.getMinutes());
+    Serial.write(rtc.getHours());
+    Serial.write(rtc.getDay());
+    Serial.write(rtc.getMonth());
+    RTC_Year = rtc.getYear()+2000;
+    Serial.write((uint8_t)RTC_Year);
+    Serial.write((uint8_t)RTC_Year>>8);
+    Serial.write(0x54);
+  }
 }
 
 void sendValuesLegacy()
@@ -1019,7 +1019,7 @@ void receiveValue(uint16_t valueOffset, byte newValue)
           RTC_Year = newValue<<8;
           break;
         case 643: //Month
-          rtc.setMonth(newValue<<8);
+          rtc.setMonth(newValue);
           break;
         case 642: //Day
           rtc.setDay(newValue);

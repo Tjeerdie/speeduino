@@ -38,6 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "utilities.h"
 #include "engineProtection.h"
 #include "secondaryTables.h"
+#include "SD_logger.h"
 #include BOARD_H //Note that this is not a real file, it is defined in globals.h. 
 
 int ignition1StartAngle = 0;
@@ -263,6 +264,10 @@ void loop()
       //FOR TEST PURPOSES ONLY!!!
       //if(vvt2_pwm_value < vvt_pwm_max_count) { vvt2_pwm_value++; }
       //else { vvt2_pwm_value = 1; }
+
+      //FOR TEST PURPOSES ONLY!!!
+      SDwriteLogEntry();
+      
     }
     if (BIT_CHECK(LOOP_TIMER, BIT_TIMER_4HZ))
     {

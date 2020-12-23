@@ -73,6 +73,8 @@
   #elif defined(STM32F407xx)
     #define BOARD_DIGITAL_GPIO_PINS 74
     #define BOARD_NR_GPIO_PINS 74
+    #define RTC_ENABLED
+    #define SD_CARD_LOGGER_ENABLED
   #endif
 
   #if defined(STM32_CORE_VERSION)
@@ -632,6 +634,7 @@ struct statuses {
   byte vvt2TargetAngle;
   byte vvt2Duty;
   byte outputsStatus;
+  byte sd_status;
 };
 
 /**
@@ -1270,7 +1273,13 @@ struct config13 {
 
   uint16_t candID[8]; //Actual CAN ID need 16bits, this is a placeholder
 
-  byte unused12_106_127[22];
+  byte unused12_106_116[10];
+  int8_t rtc_trim;
+  byte rtc_mode : 2;
+  byte sd_log_trigger_style : 2;
+  byte sd_log_file_style : 2;
+  byte sd_log_filenaming : 2;
+  byte unused12_117_127[10];
 
 #if defined(CORE_AVR)
   };
