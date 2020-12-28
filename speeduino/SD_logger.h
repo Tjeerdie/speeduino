@@ -1,17 +1,16 @@
 #ifndef SD_H
 #define SD_H
-
+#include "globals.h"
 #ifdef SD_CARD_LOGGER_ENABLED
 #include SD_CARD_LIB_H
-#include "globals.h"
 
 #define SD_STATUS_OFF               0
 #define SD_STATUS_FS_READY          1
 #define SD_STATUS_CARD_READY        2
 #define SD_STATUS_LOGGING           4
 #define SD_STATUS_ERROR_NO_WRITE    8
-#define WRITE_BUFFER_SIZE           1024
-#define WRITE_TRIGGER_BYTES         WRITE_BUFFER_SIZE/2 //when to write to sdcard. minmum is 512 bytes, and always must be multiple of 512 bytes for efficiency 
+#define WRITE_BUFFER_SIZE           16384U
+#define WRITE_TRIGGER_BYTES         512U //when to write to sdcard. minmum is 512 bytes, and always must be multiple of 512 bytes for efficiency 
 
 
 #ifdef CORE_TEENSY

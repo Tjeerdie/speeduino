@@ -1,8 +1,8 @@
-
 #include "globals.h"
 #ifdef SD_CARD_LOGGER_ENABLED
 #include "SD_logger.h"
 #include "Arduino.h"
+#include "src/STM32SD/bsp_sd.h"
 
 void updateLogdataBIN()
 {
@@ -11,24 +11,17 @@ void updateLogdataBIN()
 
 void SDinit()
 { 
-    int milistart = millis();
     currentStatus.sd_status = SD_STATUS_OFF; 
     //Init the connection to the card reader
     if (SD.begin(SD_CS_PIN)) 
     {
         currentStatus.sd_status |= SD_STATUS_CARD_READY;
     }   
-    else { currentStatus.sd_status |= SD_STATUS_ERROR_NO_WRITE; }
-
-    //Debug lines on serial port 1.
-    Serial1.printf("initSD took: %02d\n", (millis()-milistart));
-    
+    else { currentStatus.sd_status |= SD_STATUS_ERROR_NO_WRITE; }   
 }
 
 void SDopenLogFile()
 {
-    int milistart = millis();
-
     //Attempt to create a log file for writing
     if(!(currentStatus.sd_status & SD_STATUS_FS_READY))
     {
@@ -37,23 +30,105 @@ void SDopenLogFile()
         logFile = SD.open(filename, FILE_WRITE);
         if(logFile) { currentStatus.sd_status |= SD_STATUS_FS_READY; }
         else { currentStatus.sd_status &= ~SD_STATUS_FS_READY; }
-
+                
         //Write a header to the buffer
         if(currentStatus.sd_status & SD_STATUS_FS_READY)
         {
-            //now it is all hardcoded needs to be able to set from Tuner Studio.  
-            const char fields[] = "RPM;MAP;TPS;tpsDOT;mapDOT;rpmDOT;VE1;VE2;O2;O2_2;coolant;IAT;dwell;etc;etc;etc\n";
+            //Now it is all hardcoded needs to be able to set from Tuner Studio.  
+            const char fields[] =  \
+"RPM;\
+MAP;\
+TPS;\
+tpsDOT;\
+mapDOT;\
+rpmDOT;\
+VE1;\
+VE2;\
+O2;\
+O2_2;\
+coolant;\
+IAT;\
+dwell;\
+battery10;\
+advance;\
+advance1;\
+advance2;\
+corrections;\
+AEamount;\
+egoCorrection;\
+wueCorrection;\
+batCorrection;\
+iatCorrection;\
+baroCorrection;\
+launchCorrection;\
+flexCorrection;\
+fuelTempCorrection;\
+flexIgnCorrection;\
+afrTarget;\
+idleDuty;\
+CLIdleTarget;\
+idleUpActive;\
+CTPSActive;\
+fanOn;\
+ethanolPct;\
+fuelTemp;\
+AEEndTime;\
+status1;\
+spark;\
+spark2;\
+engine;\
+PW1;\
+PW2;\
+PW3;\
+PW4;\
+PW5;\
+PW6;\
+PW7;\
+PW8;\
+runSecs;\
+secl;\
+loopsPerSecond;\
+launchingSoft;\
+launchingHard;\
+freeRAM;\
+startRevolutions;\
+boostTarget;\
+testOutputs;\
+testActive;\
+boostDuty;\
+idleLoad;\
+status3;\
+flexBoostCorrection;\
+nitrous_status;\
+fuelLoad;\
+fuelLoad2;\
+ignLoad;\
+fuelPumpOn;\
+syncLossCounter;\
+knockRetard;\
+knockActive;\
+toothLogEnabled;\
+compositeLogEnabled;\
+vvt1Angle;\
+vvt1Angle;\
+vvt1TargetAngle;\
+vvt1Duty;\
+injAngle;\
+ASEValue;\
+vss;\
+idleUpOutputActive;\
+gear;\
+fuelPressure;\
+oilPressure;\
+engineProtectStatus;\
+wmiPW;";
+                                    
             memcpy(LogBufferCSV, fields, sizeof(fields));
             bufferIndex += sizeof(fields);
         }
         // logFile.flush();
         // logFile.close();
-
-        //Debug timing to get a sense how long it takes
-        Serial1.printf("openLogFile took: %02d\n", (millis()-milistart));
     }
-
-
 
 }
 
@@ -62,15 +137,9 @@ void SDopenLogFile()
 //This creates orphan sectors on the card, and also a file of 0 kbyte size. 
 void SDcloseLogFile()
 {   
-    //Some debugging that can be used to see what is going on in speeduino 
-    // Serial1.printf("rtc_mode: %02d\n",configPage13.rtc_mode);
-    // Serial1.printf("rtc_trim: %02d\n",configPage13.rtc_trim);
-    // Serial1.printf("sd_log_file_style: %02d\n",configPage13.sd_log_file_style);
-    // Serial1.printf("sd_log_filenaming: %02d\n",configPage13.sd_log_filenaming);
-    // Serial1.printf("sd_log_trigger_style: %02d\n",configPage13.sd_log_trigger_style);
-
-    //Timing measurenements
-    int microstart = micros();
+     while(BSP_SD_GetCardState())
+     {    
+     };
 
     //write buffer to sdcard before closing
     logFile.write(LogBufferCSV, bufferIndex);  
@@ -80,78 +149,54 @@ void SDcloseLogFile()
         bufferIndex = 0;
     }
     currentStatus.sd_status &= ~SD_STATUS_FS_READY;
-    Serial1.print("closing file takes us: ");
-    Serial1.println(micros()-microstart);
 }
 
 void SDwriteLogEntry()
 {
-    uint16_t bytes_written;
+    uint16_t bytes_written = 0;
     uint32_t microstart = micros();
 
     //only run logger if file is acutally open.
     if(currentStatus.sd_status & SD_STATUS_FS_READY)
     {
-
-      
-    //   updateLogdataBIN();
-    //   bytes_written = logFile.write(LogBufferBIN, sizeof(LogBufferBIN));
-      
-      updateLogdataCSV();
-    //   Serial1.printf("updateLogdataCSV took: %02d\n", (micros()-microstart));
+        //Create CSV fields.
+        updateLogdataCSV();
 
     //write debugging time to sdcard to see at what point it fails (NOT used in speeduino firmware testing)
-    //   currentStatus.MAP = millis();
-      if (bufferIndex > WRITE_TRIGGER_BYTES){
-            // logFile = SD.open(filename, FILE_WRITE);  
-            // logFile.seek(logFile.size());
-
+      if ((bufferIndex > WRITE_TRIGGER_BYTES)){
             //if buffer is filling up stop logging
             if (bufferIndex >= WRITE_BUFFER_SIZE-128){
                 currentStatus.sd_status = SD_STATUS_ERROR_NO_WRITE;
 
-                //Need to close the file else all data is lossed. 
-                //closing at this point will lock up the board because comms with sdcard are broken
-                // SDcloseLogFile();
+                //Try to close the file else all data is lossed. 
+                SDcloseLogFile();
                 
             }
-            bytes_written = logFile.write(LogBufferCSV, WRITE_TRIGGER_BYTES); 
-            Total_bytes_written += bytes_written;
-            Bufferswritten ++; 
-            memcpy(LogBufferCSV, &LogBufferCSV[bytes_written], bytes_written);
-            bufferIndex -= bytes_written;
-            if (Bufferswritten>32)
+            
+            if (BSP_SD_GetCardState()==0){
+                bytes_written = logFile.write(&LogBufferCSV[0], WRITE_TRIGGER_BYTES); 
+                bufferIndex -= bytes_written;
+                Total_bytes_written += bytes_written;
+                memcpy(&LogBufferCSV, &LogBufferCSV[bytes_written], bufferIndex);
+                Bufferswritten ++; 
+            }
+
+                        
+            if (Bufferswritten>256)
             {
                 // logFile.flush();
                 Bufferswritten = 0;
-            }
-            
-            // logFile.close();
+            }          
 
-            // Serial1.print("index= ");
-            // Serial1.println(bufferIndex);
-            // Serial1.print("Buffer= ");
-            // Serial1.println(LogBufferCSV);    
-
-            //write debugging info to sdcard to see at what point it fails (NOT used in speeduino firmware testing)
-            // currentStatus.RPM = bytes_written;
-            // currentStatus.PW1 = Total_bytes_written;
-            // Serial1.printf("write log entry: %02d\n",bytes_written);   
-            Serial1.printf("SDwrite: %02d uS\n", (micros()-microstart));     
       }
-
-    //   Serial1.printf("SDwriteLogEntry took: %02d\n", (micros()-microstart));
-      
-      //write debugging info to sdcard to see at what point it fails (NOT used in speeduino firmware testing)
-    //   currentStatus.dwell = micros()-microstart;
-
+           
     }
 
 }
 void updateCSVField()
 {
     uint16_t length = strlen(LogBufferCSVfield);
-    memcpy(&LogBufferCSV[bufferIndex], LogBufferCSVfield, length);
+    memcpy(&LogBufferCSV[bufferIndex], &LogBufferCSVfield, length);
     bufferIndex += length;
     LogBufferCSV[bufferIndex] = ';';
     bufferIndex += 1;
@@ -217,7 +262,6 @@ void updateLogdataCSV()
     itoa(currentStatus.launchingHard,LogBufferCSVfield,10);updateCSVField();
     itoa(currentStatus.freeRAM,LogBufferCSVfield,10);updateCSVField();
     itoa(currentStatus.startRevolutions,LogBufferCSVfield,10);updateCSVField();
-
     itoa(currentStatus.boostTarget,LogBufferCSVfield,10);updateCSVField();
     itoa(currentStatus.testOutputs,LogBufferCSVfield,10);updateCSVField();
     itoa(currentStatus.testActive,LogBufferCSVfield,10);updateCSVField();
@@ -249,15 +293,6 @@ void updateLogdataCSV()
     itoa(currentStatus.engineProtectStatus,LogBufferCSVfield,10);updateCSVField();
     itoa(currentStatus.wmiPW,LogBufferCSVfield,10);updateCSVField();
 
-
-
-
-//   long vvt2Angle;
-//   byte vvt2TargetAngle;
-//   byte vvt2Duty;
-//   byte outputsStatus;
-//   byte sd_status;
-   //close CSV line 
    LogBufferCSV[bufferIndex] = '\n';
    bufferIndex += 1;
 }
