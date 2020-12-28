@@ -32,6 +32,7 @@ char filename[32];
 uint16_t bufferIndex;
 uint16_t Bufferswritten;
 uint32_t Total_bytes_written;
+bool FlushFile;
 
 void updateLogdataBIN();
 void SDinit();

@@ -173,20 +173,35 @@ void SDwriteLogEntry()
                 
             }
             
+            //Only try to write data to the sdcard when the card is ready.
             if (BSP_SD_GetCardState()==0){
-                bytes_written = logFile.write(&LogBufferCSV[0], WRITE_TRIGGER_BYTES); 
-                bufferIndex -= bytes_written;
-                Total_bytes_written += bytes_written;
-                memcpy(&LogBufferCSV, &LogBufferCSV[bytes_written], bufferIndex);
-                Bufferswritten ++; 
+                if (!FlushFile){
+                    bytes_written = logFile.write(&LogBufferCSV[0], WRITE_TRIGGER_BYTES); 
+                    bufferIndex -= bytes_written;
+                    Total_bytes_written += bytes_written;
+                    memcpy(&LogBufferCSV, &LogBufferCSV[bytes_written], bufferIndex);
+                    Bufferswritten++;
+                }else
+                {
+                    logFile.flush();
+                    FlushFile = false;
+                    // Serial.println("Re-opend file");
+                    // logFile = SD.open(filename, FILE_WRITE);
+                    // logFile.seek(logFile.size());
+                    // FlushFile = false;
+                }
+                
+
             }
 
                         
-            if (Bufferswritten>256)
-            {
-                // logFile.flush();
+            if (Bufferswritten>30)
+            {   //logFile.flush();
+                // logFile.close();
+                FlushFile = true;
                 Bufferswritten = 0;
-            }          
+                // Serial.println("Flushed file");
+            }           
 
       }
            
