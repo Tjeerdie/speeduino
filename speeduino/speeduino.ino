@@ -85,6 +85,7 @@ void setup()
 {
   initialisationComplete = false; //Tracks whether the initialiseAll() function has run completely
   initialiseAll();
+  SDopenLogFile();
 }
 
 void loop()

@@ -252,7 +252,7 @@ HardwareTimer Timer11(TIM11);
 #elif defined(TIM7)
 HardwareTimer Timer11(TIM7);
 #endif
-#endif
+
 
 #if ((STM32_CORE_VERSION_MINOR<=8) & (STM32_CORE_VERSION_MAJOR==1)) 
 void oneMSInterval(HardwareTimer*);
@@ -336,22 +336,6 @@ static CAN_message_t inMsg;
   #include <STM32RTC.h>
   STM32RTC& rtc = STM32RTC::getInstance();
   extern "C" {uint32_t get_fattime (void);}
-  /*
-***********************************************************************************************************
-* SD card datalogging 
-*/
-#ifdef SD_CARD_LOGGER_ENABLED
-void dateTime(uint16_t* date, uint16_t* time) 
-{
-  // DateTime now = rtc.now();
-
-  // // return date using FAT_DATE macro to format fields
-  // *date = FAT_DATE(now.year(), now.month(), now.day());
-
-  // // return time using FAT_TIME macro to format fields
-  // *time = FAT_TIME(now.hour(), now.minute(), now.second());
-  Serial1.printf("Calleback to datTime called.\n");
-}
 #endif
 
 #endif //CORE_STM32
