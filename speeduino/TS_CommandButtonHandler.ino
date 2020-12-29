@@ -356,16 +356,16 @@ void TS_CommandButtonsHandler(int buttonCommand)
       jumpToBootloader();
       break;
     case TS_CMD_STM32_INITSD: //
-      SDinit();
+      sd_logger_init();
       break;
     case TS_CMD_STM32_OPENFILE: //
-      SDopenLogFile();
+      sd_logger_openLogFile();
       break;
     case TS_CMD_STM32_CLOSEFILE: //
-      SDcloseLogFile();
+      sd_logger_closeLogFile();
       break;
     case TS_CMD_STM32_WRITELOG: //
-      SDwriteLogEntry();
+      sd_logger_writeLogEntry();
       break;
 
     default:

@@ -37,9 +37,9 @@ uint32_t get_fattime (void){
       rtc.begin(); // initialize RTC 24H format
     #endif
 
-    #ifdef SD_CARD_LOGGER_ENABLED
+    #ifdef ENABLE_SD_LOGGER
     #include "SD_logger.h"
-    SDinit();
+    sd_logger_init();
     #endif
 
     /*

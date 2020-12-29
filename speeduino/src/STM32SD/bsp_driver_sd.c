@@ -344,9 +344,9 @@
 //     {
 //         return SD_TRANSFER_OK;
 //     }
-//     else if((card_state == HAL_SD_CARD_SENDING) ||
-//             (card_state == HAL_SD_CARD_RECEIVING) ||
-//             (card_state == HAL_SD_CARD_PROGRAMMING))
+//     else if((card_state == HAL_sd_logger_SENDING) ||
+//             (card_state == HAL_sd_logger_RECEIVING) ||
+//             (card_state == HAL_sd_logger_PROGRAMMING))
 //     {
 //         return SD_TRANSFER_BUSY;
 //     }

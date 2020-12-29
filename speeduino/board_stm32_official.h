@@ -320,8 +320,8 @@ static CAN_message_t inMsg;
 * SD card logging
 */
 
-#ifdef SD_CARD_LOGGER_ENABLED
-  #define SD_CARD_LIB_H "src/STM32SD/STM32SD.h"
+#ifdef ENABLE_SD_LOGGER
+  #define sd_logger_LIB_H "src/STM32SD/STM32SD.h"
   #define ENABLE_INTERNAL_RTC //STM32 has internal rtc
   #define LOGGER_WRITE_BLOCK_SIZE 512
   #endif

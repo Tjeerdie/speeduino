@@ -64,43 +64,43 @@ bool Sd2Card::init(uint32_t detectpin)
 
 uint8_t Sd2Card::type(void) const
 {
-  uint8_t cardType = SD_CARD_TYPE_UKN;
+  uint8_t cardType = sd_logger_TYPE_UKN;
 #ifndef STM32L1xx
   switch (_SdCardInfo.CardType) {
     case CARD_SDSC:
       switch (_SdCardInfo.CardVersion) {
         case CARD_V1_X:
-          cardType = SD_CARD_TYPE_SD1;
+          cardType = sd_logger_TYPE_SD1;
           break;
         case CARD_V2_X:
-          cardType = SD_CARD_TYPE_SD2;
+          cardType = sd_logger_TYPE_SD2;
           break;
         default:
-          cardType = SD_CARD_TYPE_UKN;
+          cardType = sd_logger_TYPE_UKN;
       }
       break;
     case CARD_SDHC_SDXC:
-      cardType = SD_CARD_TYPE_SDHC;
+      cardType = sd_logger_TYPE_SDHC;
       break;
     case CARD_SECURED:
-      cardType = SD_CARD_TYPE_SECURED;
+      cardType = sd_logger_TYPE_SECURED;
       break;
     default:
-      cardType = SD_CARD_TYPE_UKN;
+      cardType = sd_logger_TYPE_UKN;
   }
 #else /* STM32L1xx */
   switch (_SdCardInfo.CardType) {
-    case STD_CAPACITY_SD_CARD_V1_1:
-      cardType = SD_CARD_TYPE_SD1;
+    case STD_CAPACITY_sd_logger_V1_1:
+      cardType = sd_logger_TYPE_SD1;
       break;
-    case STD_CAPACITY_SD_CARD_V2_0:
-      cardType = SD_CARD_TYPE_SD2;
+    case STD_CAPACITY_sd_logger_V2_0:
+      cardType = sd_logger_TYPE_SD2;
       break;
     case HIGH_CAPACITY_SD_CARD:
-      cardType = SD_CARD_TYPE_SDHC;
+      cardType = sd_logger_TYPE_SDHC;
       break;
     default:
-      cardType = SD_CARD_TYPE_UKN;
+      cardType = sd_logger_TYPE_UKN;
   }
 #endif
   return cardType;

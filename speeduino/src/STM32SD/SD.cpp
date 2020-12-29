@@ -73,7 +73,7 @@ bool SDClass::begin(uint32_t detectpin)
 
 /**
   * @brief  Check if a file or folder exist on the SD disk
-  * @param  filename: File name
+  * @param  sd_logger_fileName: File name
   * @retval true or false
   */
 bool SDClass::exists(const char *filepath)
@@ -89,7 +89,7 @@ bool SDClass::exists(const char *filepath)
 
 /**
   * @brief  Create directory on the SD disk
-  * @param  filename: File name
+  * @param  sd_logger_fileName: File name
   * @retval true if created or existing else false
   */
 bool SDClass::mkdir(const char *filepath)
@@ -104,7 +104,7 @@ bool SDClass::mkdir(const char *filepath)
 
 /**
   * @brief  Remove directory on the SD disk
-  * @param  filename: File name
+  * @param  sd_logger_fileName: File name
   * @retval true or false
   */
 bool SDClass::rmdir(const char *filepath)
@@ -118,7 +118,7 @@ bool SDClass::rmdir(const char *filepath)
 
 /**
   * @brief  Open a file on the SD disk, if not existing it's created
-  * @param  filename: File name
+  * @param  sd_logger_fileName: File name
   * @retval File object referring to the opened file
   */
 File SDClass::open(const char *filepath)
@@ -133,7 +133,7 @@ File SDClass::open(const char *filepath)
 
 /**
   * @brief  Open a file on the SD disk, if not existing it's created
-  * @param  filename: File name
+  * @param  sd_logger_fileName: File name
   * @param  mode: the mode in which to open the file
   * @retval File object referring to the opened file
   */
@@ -153,7 +153,7 @@ File SDClass::open(const char *filepath, uint8_t mode)
 
 /**
   * @brief  Remove a file on the SD disk
-  * @param  filename: File name
+  * @param  sd_logger_fileName: File name
   * @retval true or false
   */
 bool SDClass::remove(const char *filepath)

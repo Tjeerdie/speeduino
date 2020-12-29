@@ -85,7 +85,7 @@ void setup()
 {
   initialisationComplete = false; //Tracks whether the initialiseAll() function has run completely
   initialiseAll();
-  SDopenLogFile();
+  sd_logger_openLogFile();
 }
 
 void loop()
@@ -267,7 +267,7 @@ void loop()
       //else { vvt2_pwm_value = 1; }
 
       //FOR TEST PURPOSES ONLY!!!
-      SDwriteLogEntry();
+      sd_logger_writeLogEntry();
       
     }
     if (BIT_CHECK(LOOP_TIMER, BIT_TIMER_4HZ))

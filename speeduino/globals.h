@@ -74,7 +74,7 @@
     #define BOARD_DIGITAL_GPIO_PINS 74
     #define BOARD_NR_GPIO_PINS 74
     #define RTC_ENABLED
-    #define SD_CARD_LOGGER_ENABLED
+    #define ENABLE_SD_LOGGER
   #endif
 
   #if defined(STM32_CORE_VERSION)

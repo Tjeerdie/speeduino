@@ -40,15 +40,15 @@
 #include "bsp_sd.h"
 
 // card types to match Arduino definition
-#define SD_CARD_TYPE_UKN      0
+#define sd_logger_TYPE_UKN      0
 /** Standard capacity V1 SD card */
-#define SD_CARD_TYPE_SD1      1
+#define sd_logger_TYPE_SD1      1
 /** Standard capacity V2 SD card */
-#define SD_CARD_TYPE_SD2      2
+#define sd_logger_TYPE_SD2      2
 /** High Capacity SD card */
-#define SD_CARD_TYPE_SDHC     3
+#define sd_logger_TYPE_SDHC     3
 /** High Capacity SD card */
-#define SD_CARD_TYPE_SECURED  4
+#define sd_logger_TYPE_SECURED  4
 
 class Sd2Card {
   public:
