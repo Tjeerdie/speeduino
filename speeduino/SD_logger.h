@@ -11,8 +11,9 @@
 #define SD_STATUS_ERROR_NO_WRITE    8
 
 #define SD_LOGGER_BUFFER_SIZE       16384U
-#define SD_LOGGER_WRITE_TRIGGER     512U //when to write to sdcard. Minmum is 512 bytes, and always must be integer multiple of 512 bytes for efficiency 
-#define SD_LOGGER_CLOSE_FILE_TOUT   300 //timeout on closing file of 300 milliseconds   
+#define SD_LOGGER_WRITE_TRIG        512U    //when to write to sdcard. Minmum is 512 bytes, and always must be integer multiple of 512 bytes for efficiency 
+#define SD_LOGGER_CLOSE_FILE_TOUT   300     //timeout on closing file of 300 milliseconds 
+#define SD_LOGGER_FLUSH_FILE_TRIG   30      //After how many chuncks of data a flush of the file is executed. 
 
 #ifdef CORE_TEENSY
     #define SD_CS_PIN BUILTIN_SDCARD

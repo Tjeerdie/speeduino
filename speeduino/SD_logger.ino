@@ -143,7 +143,6 @@ wmiPW;\
 
 }
 
-
 //this function needs to be called to close the file. When the board loses power this one is not called and the file is not closed poperly.
 //This creates orphan sectors on the card, and also a file of 0 kbyte size. 
 void sd_logger_closeLogFile()
@@ -180,45 +179,39 @@ void sd_logger_writeLogEntry()
         //Create CSV fields.
         sd_logger_updateLogdataCSV();
 
-        //write debugging time to sdcard to see at what point it fails (NOT used in speeduino firmware testing)
-        if ((sd_logger_bufferIndex > SD_LOGGER_WRITE_TRIGGER)){
-            //if buffer is filling up stop logging
+        //Log data to sd card if there is more data in the buffer than the trigger bytes.
+        if ((sd_logger_bufferIndex > SD_LOGGER_WRITE_TRIG)){
+
+            //if buffer is filling up stop logging to prvent buffer overflow.
             if (sd_logger_bufferIndex >= SD_LOGGER_BUFFER_SIZE-128){
                 currentStatus.sd_status = SD_STATUS_ERROR_NO_WRITE;
 
                 //Try to close the file else all data is lossed. 
                 sd_logger_closeLogFile();
-                
             }
             
             //Only try to write data to the sdcard when the card is ready.
             if (BSP_SD_GetCardState()==0){
+                //Only write data to sdcard if no fulsh is needed at this moment
                 if (!sd_logger_fileNeedsFlush){
-                    bytes_written = sd_logger_logFile.write(&sd_logger_LogBufferCSV[0], SD_LOGGER_WRITE_TRIGGER); 
+                    bytes_written = sd_logger_logFile.write(&sd_logger_LogBufferCSV[0], SD_LOGGER_WRITE_TRIG); 
                     sd_logger_bufferIndex -= bytes_written;
                     sd_logger_totalBytesWritten += bytes_written;
                     memcpy(&sd_logger_LogBufferCSV, &sd_logger_LogBufferCSV[bytes_written], sd_logger_bufferIndex);
                     sd_logger_bufferswritten++;
+                //File flush needed. so this instead.     
                 }else
-                {
+                {   
+                    //Flush the file, all size and last modified data is written to the file
                     sd_logger_logFile.flush();
                     sd_logger_fileNeedsFlush = false;
-                    // Serial.println("Re-opend file");
-                    // sd_logger_logFile = SD.open(sd_logger_fileName, FILE_WRITE);
-                    // sd_logger_logFile.seek(sd_logger_logFile.size());
-                    // sd_logger_fileNeedsFlush = false;
                 }
-                
-
             }
-
-                        
-            if (sd_logger_bufferswritten>30)
-            {   //sd_logger_logFile.flush();
-                // sd_logger_logFile.close();
+            //trigger a file flush on next write of datalogger.
+            if (sd_logger_bufferswritten>SD_LOGGER_FLUSH_FILE_TRIG)
+            {   
                 sd_logger_fileNeedsFlush = true;
                 sd_logger_bufferswritten = 0;
-                // Serial.println("Flushed file");
             }           
 
       }
@@ -229,7 +222,7 @@ void sd_logger_writeLogEntry()
 void updateCSVField(long value, bool lastValue)
 {
 
-    //Make string out of the initger values in current status
+    //Make string out of the integer values in current status
     itoa(value,sd_logger_LogBufferCSVfield,10);
     uint16_t length = strlen(sd_logger_LogBufferCSVfield);
 
@@ -239,11 +232,11 @@ void updateCSVField(long value, bool lastValue)
     //increase logbuffer index to newwest position 
     sd_logger_bufferIndex += length;
 
-    //Every field has a seperator, add this to the fix too
+    //Every field has a seperator, add this to the logbuffer too
     sd_logger_LogBufferCSV[sd_logger_bufferIndex] = ';';
     sd_logger_bufferIndex += 1;
 
-    //end of line charter needs to be added by last value.
+    //end of line charter needs to be added after last value.
     if (lastValue)
     {   
         sd_logger_LogBufferCSV[sd_logger_bufferIndex] = '\n';
@@ -253,9 +246,8 @@ void updateCSVField(long value, bool lastValue)
 
 void sd_logger_updateLogdataCSV()
 {
-    
-    // Looping over a struct is not possible. 
-    // Using the fullStatus[] with updateFullStatus()? 
+    // Looping over a struct is not possible, therefore the current implementation.
+    // Using the fullStatus[] with updateFullStatus() in the future? 
     updateCSVField(currentStatus.hasSync, false);
     updateCSVField(currentStatus.RPM, false);
     updateCSVField(currentStatus.MAP, false);
@@ -311,7 +303,7 @@ void sd_logger_updateLogdataCSV()
     updateCSVField(currentStatus.loopsPerSecond, false);
     updateCSVField(currentStatus.launchingSoft, false);
     updateCSVField(currentStatus.launchingHard, false);
-    updateCSVField(currentStatus.freeRAM, false);
+    updateCSVField(freeRam(), false);
     updateCSVField(currentStatus.startRevolutions, false);
     updateCSVField(currentStatus.boostTarget, false);
     updateCSVField(currentStatus.testOutputs, false);
