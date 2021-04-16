@@ -48,13 +48,14 @@
 
 #elif defined(STM32_MCU_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(STM32)
   #define CORE_STM32
-  #define BOARD_MAX_ADC_PINS  15 //Number of analog pins. THIS NEEDS CONFIRMING FOR STM32!
   #if defined(STM32F407xx) //F407 can do 8x8 STM32F401/STM32F411 not
    #define INJ_CHANNELS 8
    #define IGN_CHANNELS 8
+   #define BOARD_MAX_ADC_PINS  13 //Number of analog pins. THIS NEEDS CONFIRMING FOR STM32!
   #else
    #define INJ_CHANNELS 4
    #define IGN_CHANNELS 5
+   #define BOARD_MAX_ADC_PINS  15 //Number of analog pins. THIS NEEDS CONFIRMING FOR STM32!
   #endif
 
 //Select one for EEPROM,the default is EEPROM emulation on internal flash.
