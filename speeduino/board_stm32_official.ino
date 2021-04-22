@@ -58,6 +58,7 @@ HardwareTimer Timer11(TIM7);
 #endif
 #endif
 
+#ifdef RTC_ENABLED
 STM32RTC& rtc = STM32RTC::getInstance();
 //This function is called by the fatfs library to get the current time if a file is created or modified to update the file time
 uint32_t get_fattime (void){

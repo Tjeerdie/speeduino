@@ -464,7 +464,7 @@ void logger_updateLogdataCSV()
     updateCSVField((int)currentStatus.vvt1Angle, false);
     updateCSVField((int)currentStatus.vvt1Angle, false);
     updateCSVField(currentStatus.vvt1TargetAngle, false);
-    updateCSVField(currentStatus.vvt1Duty, false);
+    updateCSVField((int)currentStatus.vvt1Duty, false);
     updateCSVField(currentStatus.injAngle, false);
     updateCSVField(currentStatus.ASEValue, false);
     updateCSVField(currentStatus.vss, false);

@@ -660,6 +660,8 @@ void command()
             byte month = Serial.read();
             uint16_t year = Serial.read();
             year = word(Serial.read(), year);
+            //Note comms from rtc applet are in big endian, 32 bit processors speeduino are little endian so need byte swap 
+            year = (year<<8) | (year>>8);
             Serial.read(); //Final byte is unused (Always has value 0x5a)
             rtc_setTime(second, minute, hour, day, month, year);
           }
