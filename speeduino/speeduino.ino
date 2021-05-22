@@ -299,7 +299,7 @@ void loop()
       nitrousControl();
       idleControl(); //Perform any idle related actions. Even at higher frequencies, running 4x per second is sufficient.
       
-      currentStatus.vss = getSpeed();
+      // currentStatus.vss = getSpeed();
       currentStatus.gear = getGear();
       currentStatus.fuelPressure = getFuelPressure();
       currentStatus.oilPressure = getOilPressure();

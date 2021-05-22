@@ -284,8 +284,11 @@ static inline void checkPerToothTiming(int16_t crankAngle, uint16_t currentTooth
   {
     if ( (currentTooth == ignition1EndTooth) )
     {
-      if( (ignitionSchedule1.Status == RUNNING) ) { IGN1_COMPARE = IGN1_COUNTER + uS_TO_TIMER_COMPARE( fastDegreesToUS( ignitionLimits( (ignition1EndAngle - crankAngle) ) ) ); }
-      else if(currentStatus.startRevolutions > MIN_CYCLES_FOR_ENDCOMPARE) { ignitionSchedule1.endCompare = IGN1_COUNTER + uS_TO_TIMER_COMPARE( fastDegreesToUS( ignitionLimits( (ignition1EndAngle - crankAngle) ) ) ); ignitionSchedule1.endScheduleSetByDecoder = true; }
+      if( (ignitionSchedule1.Status == RUNNING) ) { IGN1_COMPARE = (IGN1_COUNTER + uS_TO_TIMER_COMPARE( fastDegreesToUS( ignitionLimits( (ignition1EndAngle - crankAngle) ) ) )); }
+      else if(currentStatus.startRevolutions > MIN_CYCLES_FOR_ENDCOMPARE) { ignitionSchedule1.endCompare = IGN1_COUNTER + uS_TO_TIMER_COMPARE( fastDegreesToUS( ignitionLimits( (ignition1EndAngle - crankAngle) ) ) ); 
+                                                                            ignitionSchedule1.endScheduleSetByDecoder = true; 
+                                                                            currentStatus.vss=ignitionSchedule1.endCompare-ignitionSchedule1.startCompare; 
+                                                                            }
     }
     else if ( (currentTooth == ignition2EndTooth) )
     {

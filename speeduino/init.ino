@@ -2629,9 +2629,9 @@ void setPinMapping(byte boardID)
       pinMode(pinBaro, INPUT);
     #endif
   #endif
-  pinMode(pinTrigger, INPUT);
-  pinMode(pinTrigger2, INPUT);
-  pinMode(pinTrigger3, INPUT);
+  pinMode(pinTrigger, INPUT_PULLDOWN);
+  pinMode(pinTrigger2, INPUT_PULLDOWN);
+  pinMode(pinTrigger3, INPUT_PULLDOWN);
 
   //Each of the below are only set when their relevant function is enabled. This can help prevent pin conflicts that users aren't aware of with unused functions
   if(configPage2.flexEnabled > 0)
